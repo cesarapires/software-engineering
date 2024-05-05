@@ -5,7 +5,7 @@ classDiagram
     << (S, #FFA500) Logger >>
     -instance: Logger
     -logFile: File
-    +getInstance(): Logger
+    + static getInstance(): Logger
     +log(message: String)
     -createLogFile()
   }
@@ -29,11 +29,12 @@ classDiagram
 
   class CarteiraModel {
     << (M, #FF7700) CarteiraModel >>
+    -acoes: AcaoModel[]
+    -nome: String
     +getCarteira()
     +adicionarAcao()
     +removerAcao()
     +atualizarAcao()
-    -acoes: AcaoModel[]
     +attach(observer: Observer)
     +detach(observer: Observer)
     +notifyObservers()
@@ -53,7 +54,6 @@ classDiagram
     << (C, #00AA00) CarteiraController >>
     -modelo: CarteiraModel
     -visao: CarteiraView
-    -logger: Logger
     +exibirCarteira()
     +adicionarAcao()
     +removerAcao()
@@ -64,6 +64,8 @@ classDiagram
 
   class AcaoModel {
     << (M, #FF7700) AcaoModel >>
+    -codigo: string
+    -nome: String
     +getAcao()
     +adicionarAcao()
     +removerAcao()
@@ -87,7 +89,6 @@ classDiagram
     << (C, #00AA00) AcaoController >>
     -modelo: AcaoModel
     -visao: AcaoView
-    -logger: Logger
     +exibirAcao()
     +adicionarAcao()
     +removerAcao()
@@ -98,6 +99,10 @@ classDiagram
 
   class UsuarioModel {
     << (M, #FF7700) UsuarioModel >>
+    -nome: String
+    -email: String
+    -saldo: Double
+    -carteiras: CarteiraModel[]
     +getUsuario()
     +adicionarUsuario()
     +removerUsuario()
@@ -122,7 +127,6 @@ classDiagram
     << (C, #00AA00) UsuarioController >>
     -modelo: UsuarioModel
     -visao: UsuarioView
-    -logger: Logger
     +exibirUsuario()
     +adicionarUsuario()
     +removerUsuario()
@@ -130,6 +134,10 @@ classDiagram
     +login()
     +confirmarRemocao()
     +cancelarRemocao()
+  }
+
+  class Controller {
+    -logger: Logger
   }
 
   class AplicacaoCarteira {
@@ -143,7 +151,6 @@ classDiagram
     -carteiraModel: CarteiraModel
     -acaoModel: AcaoModel
     -usuarioModel: UsuarioModel
-    -logger: Logger
     +executar()
   }
 
@@ -154,6 +161,11 @@ classDiagram
   Subject <|-- CarteiraModel
   Subject <|-- AcaoModel
   Subject <|-- UsuarioModel
+
+  Controller <|-- CarteiraController
+  Controller <|-- AcaoController
+  Controller <|-- UsuarioController
+  Controller <|-- AplicacaoCarteira
 
   CarteiraModel <-- CarteiraController
   CarteiraView <-- CarteiraController
@@ -166,12 +178,12 @@ classDiagram
   UsuarioModel <-- UsuarioController
   UsuarioView <-- UsuarioController
   UsuarioController <-- AplicacaoCarteira
+  
 
   CarteiraModel "1" -- "1" UsuarioModel
   CarteiraModel "1" o-- "*" AcaoModel
-  Logger "1" --> "*" CarteiraController: instance
-  Logger "1" --> "*" AcaoController: instance
-  Logger "1" --> "*" UsuarioController: instance
+  Logger "1" --> "*" Controller: instance
+  
 
 
 
