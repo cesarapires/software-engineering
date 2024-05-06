@@ -2,33 +2,24 @@
 classDiagram
 
   class Logger {
-    << (S, #FFA500) Logger >>
     -instance: Logger
-    -logFile: File
     + static getInstance(): Logger
     +log(message: String)
-    -createLogFile()
-  }
-
-  class File {
-    << (C, #00AA00) File >>
-    +write(text: String)
   }
 
   class Observer {
-    << (I, #FFA500) Observer >>
+    <<interface>>
     +update()
   }
 
   class Subject {
-    << (I, #FFA500) Subject >>
+    <<interface>>
     +attach(observer: Observer)
     +detach(observer: Observer)
     +notifyObservers()
   }
 
   class CarteiraModel {
-    << (M, #FF7700) CarteiraModel >>
     -acoes: AcaoModel[]
     -nome: String
     +getCarteira()
@@ -38,11 +29,9 @@ classDiagram
     +attach(observer: Observer)
     +detach(observer: Observer)
     +notifyObservers()
-    +log(message: String)
   }
 
   class CarteiraView {
-    << (V, #0077FF) CarteiraView >>
     +exibirCarteira()
     +mostrarFormularioAdicao()
     +mostrarFormularioAtualizacao()
@@ -51,7 +40,6 @@ classDiagram
   }
 
   class CarteiraController {
-    << (C, #00AA00) CarteiraController >>
     -modelo: CarteiraModel
     -visao: CarteiraView
     +exibirCarteira()
@@ -63,9 +51,9 @@ classDiagram
   }
 
   class AcaoModel {
-    << (M, #FF7700) AcaoModel >>
     -codigo: string
     -nome: String
+    -valor: Double
     +getAcao()
     +adicionarAcao()
     +removerAcao()
@@ -73,11 +61,9 @@ classDiagram
     +attach(observer: Observer)
     +detach(observer: Observer)
     +notifyObservers()
-    +log(message: String)
   }
 
   class AcaoView {
-    << (V, #0077FF) AcaoView >>
     +exibirAcao()
     +mostrarFormularioAdicao()
     +mostrarFormularioAtualizacao()
@@ -86,7 +72,6 @@ classDiagram
   }
 
   class AcaoController {
-    << (C, #00AA00) AcaoController >>
     -modelo: AcaoModel
     -visao: AcaoView
     +exibirAcao()
@@ -98,11 +83,11 @@ classDiagram
   }
 
   class UsuarioModel {
-    << (M, #FF7700) UsuarioModel >>
     -nome: String
     -email: String
     -saldo: Double
     -carteiras: CarteiraModel[]
+    -senha: String
     +getUsuario()
     +adicionarUsuario()
     +removerUsuario()
@@ -111,11 +96,9 @@ classDiagram
     +attach(observer: Observer)
     +detach(observer: Observer)
     +notifyObservers()
-    +log(message: String)
   }
 
   class UsuarioView {
-    << (V, #0077FF) UsuarioView >>
     +exibirUsuario()
     +mostrarFormularioAdicao()
     +mostrarFormularioAtualizacao()
@@ -124,7 +107,6 @@ classDiagram
   }
 
   class UsuarioController {
-    << (C, #00AA00) UsuarioController >>
     -modelo: UsuarioModel
     -visao: UsuarioView
     +exibirUsuario()
@@ -136,15 +118,32 @@ classDiagram
     +cancelarRemocao()
   }
 
+  class RelatorioView {
+    +exibirUsuario()
+    +mostrarFormularioAdicao()
+    +mostrarFormularioAtualizacao()
+    +mostrarConfirmacaoRemocao()
+    +update()
+  }
+
+  class RelatorioController {
+    -modelo: AcaoModel
+    -visao: RelatorioView
+    +emitirRelatorioMensal()
+    +emitirRelatorioQuinzenal()
+    +emitirRelatorioSemanal()
+  }
+
   class Controller {
     -logger: Logger
   }
 
   class AplicacaoCarteira {
-    << (A, #AA00AA) AplicacaoCarteira >>
     -carteiraController: CarteiraController
     -acaoController: AcaoController
     -usuarioController: UsuarioController
+    -relatorioController: RelatorioController
+    -relatorioView: RelatorioView
     -carteiraView: CarteiraView
     -acaoView: AcaoView
     -usuarioView: UsuarioView
@@ -157,6 +156,7 @@ classDiagram
   Observer <|-- CarteiraView
   Observer <|-- AcaoView
   Observer <|-- UsuarioView
+  Observer <|-- RelatorioView
 
   Subject <|-- CarteiraModel
   Subject <|-- AcaoModel
@@ -165,7 +165,7 @@ classDiagram
   Controller <|-- CarteiraController
   Controller <|-- AcaoController
   Controller <|-- UsuarioController
-  Controller <|-- AplicacaoCarteira
+  Controller <|-- RelatorioController
 
   CarteiraModel <-- CarteiraController
   CarteiraView <-- CarteiraController
@@ -178,13 +178,12 @@ classDiagram
   UsuarioModel <-- UsuarioController
   UsuarioView <-- UsuarioController
   UsuarioController <-- AplicacaoCarteira
-  
 
+  AcaoModel <-- RelatorioController
+  RelatorioView <-- RelatorioController
+  RelatorioController <-- AplicacaoCarteira
+  
   CarteiraModel "1" -- "1" UsuarioModel
   CarteiraModel "1" o-- "*" AcaoModel
-  Logger "1" --> "*" Controller: instance
-  
-
-
-
+  Logger --> Controller: instance
 ```
