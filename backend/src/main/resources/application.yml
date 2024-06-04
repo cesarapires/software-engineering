@@ -1,0 +1,25 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /
+
+database-name: share_plus
+spring:
+  application:
+    name: Share Plus
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${database-name}
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/${database-name}
+    user: postgres
+    password: postgres
+    default-schema: share_plus
+    placeholder-replacement: false
+    out-of-order: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
