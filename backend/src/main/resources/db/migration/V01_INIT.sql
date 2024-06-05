@@ -14,13 +14,13 @@ CREATE TABLE share_plus.acao (
     id SERIAL PRIMARY KEY,
     codigo TEXT UNIQUE,  -- Código da ação
     nome TEXT,                -- Nome da ação
-    valor DOUBLE PRECISION       -- Valor da ação
+    logo TEXT       -- Valor da ação
 );
 
 COMMENT ON TABLE share_plus.acao IS 'Tabela que armazena as ações';
 COMMENT ON COLUMN share_plus.acao.codigo IS 'Código da ação';
 COMMENT ON COLUMN share_plus.acao.nome IS 'Nome da ação';
-COMMENT ON COLUMN share_plus.acao.valor IS 'Valor da ação';
+COMMENT ON COLUMN share_plus.acao.logo IS 'URL da imagem da logo da empresa.';
 
 -- Tabela Usuario
 CREATE TABLE share_plus.usuario (

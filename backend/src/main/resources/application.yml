@@ -2,7 +2,7 @@ server:
   port: 9999
   servlet:
     context-path: /
-
+api-prefix: ''
 database-name: share_plus
 spring:
   application:
@@ -23,3 +23,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+  jwt:
+    secret-key: 6CB5FF2EAF5610A4
+    expiration-time: 60000
