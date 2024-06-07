@@ -1,5 +1,7 @@
 package com.software.engineering.share.plus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,6 +51,7 @@ public class Usuario implements UserDetails {
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnoreProperties(value = {"usuario"})
     private Set<HistoricoCompras> historicoCompras;
 
     @Override
