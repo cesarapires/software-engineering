@@ -7,11 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -32,11 +35,18 @@ public class Usuario implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private Double saldo;
 
     @Column(nullable = false)
-    private String password;
+    @Getter(AccessLevel.NONE)
+    private String senha;
+
+    @Column(nullable = false)
+    private LocalDateTime dataCadastro;
+
+    @Column(nullable = false)
+    private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "usuario")
     private Set<HistoricoCompras> historicoCompras;
@@ -44,6 +54,11 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
     }
 
     @Override

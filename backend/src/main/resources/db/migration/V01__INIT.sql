@@ -26,9 +26,11 @@ COMMENT ON COLUMN share_plus.acao.logo IS 'URL da imagem da logo da empresa.';
 CREATE TABLE share_plus.usuario (
     id SERIAL PRIMARY KEY,
     nome TEXT,  -- Nome do usuário
-    email TEXT,             -- Email do usuário
+    email TEXT UNIQUE,             -- Email do usuário
     saldo DOUBLE PRECISION,    -- Saldo do usuário
-    senha TEXT
+    senha TEXT,
+    data_cadastro TIMESTAMP,
+    data_atualizacao TIMESTAMP
 );
 
 COMMENT ON TABLE share_plus.usuario IS 'Tabela que armazena os usuários';
