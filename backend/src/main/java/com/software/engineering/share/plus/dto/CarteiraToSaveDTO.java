@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
-    private String token;
-    private Long expiresIn;
+public class CarteiraToSaveDTO {
+    private String nome;
+    private Long idUsuario;
 }

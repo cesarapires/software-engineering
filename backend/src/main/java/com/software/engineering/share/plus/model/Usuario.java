@@ -1,18 +1,20 @@
 package com.software.engineering.share.plus.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,10 +23,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Data
+
 @NoArgsConstructor
 @Entity
 @Table(name = "usuario", schema = "share_plus")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Usuario implements UserDetails {
 
     @Id
@@ -50,9 +55,11 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime dataAtualizacao;
 
-    @OneToMany(mappedBy = "usuario")
-    @JsonIgnoreProperties(value = {"usuario"})
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private Set<HistoricoCompras> historicoCompras;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+    private Set<Carteira> carteiras;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,5 +94,9 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Usuario(Long id) {
+        this.id = id;
     }
 }

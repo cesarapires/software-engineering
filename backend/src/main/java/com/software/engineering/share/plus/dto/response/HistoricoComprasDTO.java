@@ -1,7 +1,6 @@
-package com.software.engineering.share.plus.dto;
+package com.software.engineering.share.plus.dto.response;
 
 import com.software.engineering.share.plus.model.Acao;
-import com.software.engineering.share.plus.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,7 @@ import java.time.LocalDateTime;
 public class HistoricoComprasDTO {
 
     private Long id;
-    private Usuario usuario;
-    private Acao acao;
+    private AcaoDTO acao;
     private LocalDateTime dataCompra;
     private Integer quantidade;
     private Double valor;

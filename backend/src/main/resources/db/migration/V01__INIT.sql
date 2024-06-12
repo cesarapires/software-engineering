@@ -1,8 +1,26 @@
+-- Tabela Usuario
+CREATE TABLE share_plus.usuario (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,  -- Nome do usuário
+    email TEXT UNIQUE,             -- Email do usuário
+    saldo DOUBLE PRECISION,    -- Saldo do usuário
+    senha TEXT,
+    data_cadastro TIMESTAMP,
+    data_atualizacao TIMESTAMP
+);
+
+COMMENT ON TABLE share_plus.usuario IS 'Tabela que armazena os usuários';
+COMMENT ON COLUMN share_plus.usuario.nome IS 'Nome do usuário';
+COMMENT ON COLUMN share_plus.usuario.email IS 'Email do usuário';
+COMMENT ON COLUMN share_plus.usuario.saldo IS 'Saldo do usuário';
+COMMENT ON COLUMN share_plus.usuario.senha IS 'Senha do usuário';
+
 -- Tabela carteira
 CREATE TABLE share_plus.carteira (
     id SERIAL PRIMARY KEY,
-    nome TEXT UNIQUE,  -- Nome da carteira
-    id_usuario INTEGER  -- ID da conta associada à carteira
+    nome TEXT,  -- Nome da carteira
+    id_usuario INTEGER REFERENCES share_plus.usuario(id), -- ID da conta associada à carteira
+    UNIQUE (nome, id_usuario)
 );
 
 COMMENT ON TABLE share_plus.carteira IS 'Tabela que armazena as carteiras';
@@ -22,23 +40,6 @@ COMMENT ON COLUMN share_plus.acao.codigo IS 'Código da ação';
 COMMENT ON COLUMN share_plus.acao.nome IS 'Nome da ação';
 COMMENT ON COLUMN share_plus.acao.logo IS 'URL da imagem da logo da empresa.';
 
--- Tabela Usuario
-CREATE TABLE share_plus.usuario (
-    id SERIAL PRIMARY KEY,
-    nome TEXT,  -- Nome do usuário
-    email TEXT UNIQUE,             -- Email do usuário
-    saldo DOUBLE PRECISION,    -- Saldo do usuário
-    senha TEXT,
-    data_cadastro TIMESTAMP,
-    data_atualizacao TIMESTAMP
-);
-
-COMMENT ON TABLE share_plus.usuario IS 'Tabela que armazena os usuários';
-COMMENT ON COLUMN share_plus.usuario.nome IS 'Nome do usuário';
-COMMENT ON COLUMN share_plus.usuario.email IS 'Email do usuário';
-COMMENT ON COLUMN share_plus.usuario.saldo IS 'Saldo do usuário';
-COMMENT ON COLUMN share_plus.usuario.senha IS 'Senha do usuário';
-
 -- Tabela carteira_acao (Relação entre carteiras e ações)
 CREATE TABLE share_plus.carteira_acao (
     id SERIAL PRIMARY KEY,
@@ -57,6 +58,7 @@ CREATE TABLE share_plus.historico_compras (
     id SERIAL PRIMARY KEY,
     id_usuario INTEGER REFERENCES share_plus.usuario(id),  -- ID do usuário que fez a compra
     id_acao INTEGER REFERENCES share_plus.acao(id),  -- ID da ação comprada
+    id_carteira INTEGER REFERENCES share_plus.carteira(id),  -- ID da ação comprada
     data_compra TIMESTAMP,  -- Data e hora da compra
     quantidade INTEGER,     -- Quantidade de ações compradas
     valor DOUBLE PRECISION  -- Valor total da compra

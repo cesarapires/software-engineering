@@ -7,6 +7,7 @@ import com.software.engineering.share.plus.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +35,10 @@ public class AuthenticationService {
     }
 
     public Usuario authenticate(LoginDTO input) {
-        Usuario usuario = usuarioRepository.findByEmail(input.getEmail()).orElseThrow();
-        authenticationManager.authenticate(
+        Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword())
         );
 
-        return usuario;
+        return (Usuario) authenticate.getPrincipal();
     }
 }
