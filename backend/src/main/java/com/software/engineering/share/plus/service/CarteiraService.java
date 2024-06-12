@@ -6,7 +6,6 @@ import com.software.engineering.share.plus.mapper.CarteiraMapper;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.repository.CarteiraRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.Optional;
 public class CarteiraService {
 
     private final CarteiraRepository carteiraRepository;
-    private final ConversionService conversionService;
+    private final CarteiraMapper carteiraMapper;
 
     public Carteira salvar(CarteiraToSaveDTO carteira) {
         Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioId(carteira.getNome(), carteira.getIdUsuario());
@@ -25,7 +24,7 @@ public class CarteiraService {
             throw new EntityAlreadyExistsException("Carteira já existe para esse usuário");
         }
 
-        return carteiraRepository.save(conversionService.convert(carteira, Carteira.class));
+        return carteiraRepository.save(carteiraMapper.toEntity(carteira));
     }
 
     public List<Carteira> findAllByUsuarioId(Long idUsuario) {
