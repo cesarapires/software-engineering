@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
-import com.software.engineering.share.plus.dto.LoginDTO;
-import com.software.engineering.share.plus.dto.RegisterUserDTO;
+import com.software.engineering.share.plus.dto.request.LoginDTO;
+import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

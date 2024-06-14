@@ -1,4 +1,4 @@
-package com.software.engineering.share.plus.dto;
+package com.software.engineering.share.plus.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

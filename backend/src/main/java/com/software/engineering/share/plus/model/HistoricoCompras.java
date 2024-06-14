@@ -46,4 +46,12 @@ public class HistoricoCompras {
 
     @Column(nullable = false)
     private Double valor;
+
+    public HistoricoCompras(CarteiraAcao carteiraAcao) {
+        this.usuario = carteiraAcao.getCarteira().getUsuario();
+        this.acao = carteiraAcao.getAcao();
+        this.dataCompra = LocalDateTime.now();
+        this.quantidade = carteiraAcao.getQuantidade();
+        this.valor = carteiraAcao.getQuantidade() * carteiraAcao.getAcao().getPreco();
+    }
 }

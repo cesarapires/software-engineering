@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -98,5 +99,11 @@ public class Usuario implements UserDetails {
 
     public Usuario(Long id) {
         this.id = id;
+    }
+
+    public void checkSaldo(Double valor) {
+        if (!(this.saldo != null && this.saldo >= valor)) {
+            throw new BadRequestException("Saldo insuficiente para realizar esta transação!");
+        }
     }
 }

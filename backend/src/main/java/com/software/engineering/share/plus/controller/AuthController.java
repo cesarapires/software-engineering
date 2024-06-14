@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.controller;
 
-import com.software.engineering.share.plus.dto.LoginDTO;
-import com.software.engineering.share.plus.dto.RegisterUserDTO;
+import com.software.engineering.share.plus.dto.request.LoginDTO;
+import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
 import com.software.engineering.share.plus.dto.response.LoginResponse;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.service.AuthenticationService;

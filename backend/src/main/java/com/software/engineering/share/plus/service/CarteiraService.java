@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.service;
 
-import com.software.engineering.share.plus.dto.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.exception.EntityAlreadyExistsException;
 import com.software.engineering.share.plus.mapper.CarteiraMapper;
 import com.software.engineering.share.plus.model.Carteira;
@@ -29,5 +30,9 @@ public class CarteiraService {
 
     public List<Carteira> findAllByUsuarioId(Long idUsuario) {
         return carteiraRepository.findAllByUsuarioId(idUsuario);
+    }
+
+    public Carteira findById(Long id) {
+        return carteiraRepository.findById(id).orElseThrow(() -> new BadRequestException("Carteira não encontrada na base de dados."));
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -51,7 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request
+            MethodArgumentNotValidException exception, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request
     ) {
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 
@@ -72,7 +73,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request
+            Exception ex, @Nullable Object body, @NonNull HttpHeaders headers, HttpStatusCode statusCode, @NonNull WebRequest request
     ) {
         ExceptionDetails exceptionDetails = ExceptionDetails.builder()
                 .timestamp(LocalDateTime.now())

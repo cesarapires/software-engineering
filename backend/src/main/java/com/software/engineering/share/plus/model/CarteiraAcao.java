@@ -39,4 +39,10 @@ public class CarteiraAcao {
 
     @Column(nullable = false)
     private Integer quantidade;
+
+    public CarteiraAcao(Integer quantidade, Acao acao, Carteira carteira) {
+        this.quantidade = quantidade;
+        this.acao = acao;
+        this.carteira = carteira;
+    }
 }

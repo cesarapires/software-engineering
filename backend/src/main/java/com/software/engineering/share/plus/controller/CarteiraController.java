@@ -1,9 +1,8 @@
 package com.software.engineering.share.plus.controller;
 
-import com.software.engineering.share.plus.dto.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.service.CarteiraService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
