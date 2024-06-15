@@ -35,6 +35,10 @@ public class HistoricoCompras {
     private Usuario usuario;
 
     @ManyToOne
+    @JoinColumn(name = "id_carteira", nullable = false)
+    private Carteira carteira;
+
+    @ManyToOne
     @JoinColumn(name = "id_acao", nullable = false)
     private Acao acao;
 
@@ -47,11 +51,15 @@ public class HistoricoCompras {
     @Column(nullable = false)
     private Double valor;
 
-    public HistoricoCompras(CarteiraAcao carteiraAcao) {
+    @Column(name = "fl_compra", nullable = false)
+    private Boolean isCompra;
+
+    public HistoricoCompras(CarteiraAcao carteiraAcao, boolean isCompra) {
         this.usuario = carteiraAcao.getCarteira().getUsuario();
         this.acao = carteiraAcao.getAcao();
         this.dataCompra = LocalDateTime.now();
         this.quantidade = carteiraAcao.getQuantidade();
         this.valor = carteiraAcao.getQuantidade() * carteiraAcao.getAcao().getPreco();
+        this.isCompra = isCompra;
     }
 }

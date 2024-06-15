@@ -6,6 +6,7 @@ import com.software.engineering.share.plus.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,5 +25,32 @@ public class UsuarioService {
     public UsuarioDTO findUsuario(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         return conversionService.convert(usuario, UsuarioDTO.class);
+    }
+
+    @Transactional
+    public void addSaldo(Usuario usuario, Double valor) {
+        usuario.setSaldo(usuario.getSaldo() + valor);
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void addSaldo(Double valor) {
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        addSaldo(usuario, valor);
+    }
+
+    @Transactional
+    public void removeSaldo(Usuario usuario, Double valor) {
+        usuario.checkSaldo(valor);
+        usuario.setSaldo(usuario.getSaldo() - valor);
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void removeSaldo(Double valor) {
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        removeSaldo(usuario, valor);
     }
 }
