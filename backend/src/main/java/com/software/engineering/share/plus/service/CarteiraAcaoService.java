@@ -25,17 +25,22 @@ public class CarteiraAcaoService {
     @Transactional
     public CarteiraAcao buyAcao(BuyAcaoDTO dto) {
         Acao acao = acaoService.findById(dto.getIdAcao());
-        Double totalTransacao = acao.getPreco() * dto.getQuantidade();
-
-        usuarioService.removeSaldo(totalTransacao);
         Carteira carteira = carteiraService.findById(dto.getIdCarteira());
+
+        Double totalTransacao = acao.getPreco() * dto.getQuantidade();
+        usuarioService.removeSaldo(totalTransacao);
 
         Optional<CarteiraAcao> optionalCarteiraAcao = carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao);
         CarteiraAcao carteiraAcao = optionalCarteiraAcao.orElseGet(() -> new CarteiraAcao(dto.getQuantidade(), acao, carteira));
 
+        if (optionalCarteiraAcao.isPresent()) {
+            carteiraAcao.setQuantidade(carteiraAcao.getQuantidade() + dto.getQuantidade());
+        }
+
         carteiraAcaoRepository.save(carteiraAcao);
-        historicoComprasRepository.save(new HistoricoCompras(carteiraAcao, true));
-        //TODO atilizar quantidade caso carteira acao seja existente
+        historicoComprasRepository.save(
+                new HistoricoCompras(carteira, acao, dto.getQuantidade(), totalTransacao, true)
+        );
 
         return carteiraAcao;
     }

@@ -54,12 +54,12 @@ public class HistoricoCompras {
     @Column(name = "fl_compra", nullable = false)
     private Boolean isCompra;
 
-    public HistoricoCompras(CarteiraAcao carteiraAcao, boolean isCompra) {
-        this.usuario = carteiraAcao.getCarteira().getUsuario();
-        this.acao = carteiraAcao.getAcao();
+    public HistoricoCompras(Carteira carteira, Acao acao, Integer quantidade, Double valor, boolean isCompra) {
+        this.usuario = carteira.getUsuario();
+        this.acao = acao;
         this.dataCompra = LocalDateTime.now();
-        this.quantidade = carteiraAcao.getQuantidade();
-        this.valor = carteiraAcao.getQuantidade() * carteiraAcao.getAcao().getPreco();
+        this.quantidade = quantidade;
+        this.valor = valor;
         this.isCompra = isCompra;
     }
 }
