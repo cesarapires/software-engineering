@@ -5,7 +5,9 @@ import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.exception.EntityAlreadyExistsException;
 import com.software.engineering.share.plus.mapper.CarteiraMapper;
 import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
 import com.software.engineering.share.plus.repository.CarteiraRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class CarteiraService {
 
     private final CarteiraRepository carteiraRepository;
+    private final CarteiraAcaoRepository carteiraAcaoRepository;
     private final CarteiraMapper carteiraMapper;
 
     public Carteira salvar(CarteiraToSaveDTO carteira) {
@@ -34,5 +37,18 @@ public class CarteiraService {
 
     public Carteira findById(Long id) {
         return carteiraRepository.findById(id).orElseThrow(() -> new BadRequestException("Carteira não encontrada na base de dados."));
+    }
+
+    @Transactional
+    public void deleteCarteiraIfEmpty(Long idCarteira) {
+        Carteira carteira = findById(idCarteira);
+
+        boolean hasAcoes = carteiraAcaoRepository.existsByCarteira(carteira);
+
+        if (hasAcoes) {
+            throw new BadRequestException("Não é possível excluir a carteira pois ela contém ações");
+        }
+
+        carteiraRepository.delete(carteira);
     }
 }

@@ -4,7 +4,6 @@ import com.software.engineering.share.plus.dto.response.UsuarioDTO;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

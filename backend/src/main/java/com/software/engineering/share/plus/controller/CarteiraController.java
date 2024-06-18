@@ -5,6 +5,7 @@ import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.service.CarteiraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,5 +29,11 @@ public class CarteiraController {
     @GetMapping("/all")
     public ResponseEntity<List<Carteira>> findAll(@RequestParam("idUsuario") Long idUsuario) {
         return ResponseEntity.ok(carteiraService.findAllByUsuarioId(idUsuario));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> save(@RequestParam Long idCarteira) {
+        carteiraService.deleteCarteiraIfEmpty(idCarteira);
+        return ResponseEntity.ok().build();
     }
 }

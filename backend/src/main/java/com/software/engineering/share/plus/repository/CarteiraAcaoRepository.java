@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface CarteiraAcaoRepository extends JpaRepository<CarteiraAcao, Long> {
 
     Optional<CarteiraAcao> findByCarteiraIsAndAcaoIs(Carteira carteira, Acao acao);
+
+    boolean existsByCarteira(Carteira carteira);
 }
