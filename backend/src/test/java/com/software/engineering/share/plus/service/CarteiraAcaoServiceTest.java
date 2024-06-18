@@ -1,15 +1,17 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
+import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.model.CarteiraAcao;
-import com.software.engineering.share.plus.model.HistoricoCompras;
+import com.software.engineering.share.plus.model.HistoricoTransacao;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
-import com.software.engineering.share.plus.repository.HistoricoComprasRepository;
+import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import com.software.engineering.share.plus.util.MockEntityFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,95 +46,161 @@ public class CarteiraAcaoServiceTest {
     private CarteiraAcaoRepository carteiraAcaoRepository;
 
     @Mock
-    private HistoricoComprasRepository historicoComprasRepository;
+    private HistoricoTransacaoRepository historicoTransacaoRepository;
 
     @InjectMocks
     private CarteiraAcaoService carteiraAcaoService;
 
-    private BuyAcaoDTO dto;
     private Acao acao;
     private Carteira carteira;
 
     @BeforeEach
     public void setup() {
-        dto = MockEntityFactory.createBuyAcaoDTO(1L, 1L, 10);
         acao = MockEntityFactory.createAcao(1L, 100.0);
         carteira = MockEntityFactory.createCarteira(1L);
     }
 
-    @Test
-    public void testBuyAcao_NewCarteiraAcao() {
-        when(acaoService.findById(dto.getIdAcao())).thenReturn(acao);
-        when(carteiraService.findById(dto.getIdCarteira())).thenReturn(carteira);
-        when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.empty());
+    @Nested
+    class testBuyAcao {
+        private BuyAcaoDTO buyDto;
+        @BeforeEach
+        public void setup() {
+            buyDto = MockEntityFactory.createBuyAcaoDTO(1L, 1L, 10);
+        }
 
-        CarteiraAcao result = carteiraAcaoService.buyAcao(dto);
+        @Test
+        public void testBuyAcao_NewCarteiraAcao() {
+            when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
+            when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.empty());
 
-        assertNotNull(result);
-        assertEquals(dto.getQuantidade(), result.getQuantidade());
-        verify(usuarioService).removeSaldo(acao.getPreco() * dto.getQuantidade());
-        verify(carteiraAcaoRepository).save(result);
-        verify(historicoComprasRepository).save(any(HistoricoCompras.class));
+            CarteiraAcao result = carteiraAcaoService.buyAcao(buyDto);
+
+            assertNotNull(result);
+            assertEquals(buyDto.getQuantidade(), result.getQuantidade());
+            verify(usuarioService).removeSaldo(acao.getPreco() * buyDto.getQuantidade());
+            verify(carteiraAcaoRepository).save(result);
+            verify(historicoTransacaoRepository).save(any(HistoricoTransacao.class));
+        }
+
+        @Test
+        public void testBuyAcao_ExistingCarteiraAcao() {
+            CarteiraAcao existingCarteiraAcao = new CarteiraAcao(5, acao, carteira);
+            when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
+            when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(existingCarteiraAcao));
+
+            CarteiraAcao result = carteiraAcaoService.buyAcao(buyDto);
+
+            assertNotNull(result);
+            assertEquals(15, result.getQuantidade());
+            verify(usuarioService).removeSaldo(acao.getPreco() * buyDto.getQuantidade());
+            verify(carteiraAcaoRepository).save(result);
+            verify(historicoTransacaoRepository).save(any(HistoricoTransacao.class));
+        }
+
+        @Test
+        public void testBuyAcao_AcaoNotFound() {
+            when(acaoService.findById(buyDto.getIdAcao())).thenThrow(new BadRequestException("Ação não encontrada na base de dados."));
+
+            BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+                carteiraAcaoService.buyAcao(buyDto);
+            });
+
+            assertEquals("Ação não encontrada na base de dados.", exception.getMessage());
+            verify(usuarioService, never()).removeSaldo(anyDouble());
+            verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
+            verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));
+        }
+
+        @Test
+        public void testBuyAcao_CarteiraNotFound() {
+            when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(buyDto.getIdCarteira())).thenThrow(new BadRequestException("Carteira não encontrada na base de dados."));
+
+            BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+                carteiraAcaoService.buyAcao(buyDto);
+            });
+
+            assertEquals("Carteira não encontrada na base de dados.", exception.getMessage());
+            verify(usuarioService, never()).removeSaldo(anyDouble());
+            verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
+            verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));
+        }
+
+        @Test
+        public void testBuyAcao_InsufficientBalance() {
+            when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
+            doThrow(new BadRequestException("Saldo insuficiente para realizar esta transação!"))
+                    .when(usuarioService).removeSaldo(anyDouble());
+
+            BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+                carteiraAcaoService.buyAcao(buyDto);
+            });
+
+            assertEquals("Saldo insuficiente para realizar esta transação!", exception.getMessage());
+            verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
+            verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));
+        }
     }
 
-    @Test
-    public void testBuyAcao_ExistingCarteiraAcao() {
-        CarteiraAcao existingCarteiraAcao = new CarteiraAcao(5, acao, carteira);
-        when(acaoService.findById(dto.getIdAcao())).thenReturn(acao);
-        when(carteiraService.findById(dto.getIdCarteira())).thenReturn(carteira);
-        when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(existingCarteiraAcao));
+    @Nested
+    class testSellAcao {
+        private SellAcaoDTO sellDto;
+        private CarteiraAcao carteiraAcao;
+        @BeforeEach
+        public void setup() {
+            sellDto = MockEntityFactory.createSellAcaoDTO(1L, 1L, 5);
+            carteiraAcao = MockEntityFactory.createCarteiraAcao(10, acao, carteira);
+        }
 
-        CarteiraAcao result = carteiraAcaoService.buyAcao(dto);
+        @Test
+        public void testSellAcao_OK() {
+            when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
+            when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(carteiraAcao));
 
-        assertNotNull(result);
-        assertEquals(15, result.getQuantidade());
-        verify(usuarioService).removeSaldo(acao.getPreco() * dto.getQuantidade());
-        verify(carteiraAcaoRepository).save(result);
-        verify(historicoComprasRepository).save(any(HistoricoCompras.class));
-    }
+            carteiraAcaoService.sellAcao(sellDto);
 
-    @Test
-    public void testBuyAcao_AcaoNotFound() {
-        when(acaoService.findById(dto.getIdAcao())).thenThrow(new BadRequestException("Ação não encontrada na base de dados."));
+            assertEquals(5, carteiraAcao.getQuantidade());
+            verify(usuarioService).addSaldo(acao.getPreco() * sellDto.getQuantidade());
+            verify(carteiraAcaoRepository).save(carteiraAcao);
+            verify(historicoTransacaoRepository).save(any(HistoricoTransacao.class));
+        }
 
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            carteiraAcaoService.buyAcao(dto);
-        });
+        @Test
+        public void testSellAcao_InsufficientQuantity() {
+            when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
+            when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(carteiraAcao));
 
-        assertEquals("Ação não encontrada na base de dados.", exception.getMessage());
-        verify(usuarioService, never()).removeSaldo(anyDouble());
-        verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
-        verify(historicoComprasRepository, never()).save(any(HistoricoCompras.class));
-    }
+            sellDto.setQuantidade(15); // Attempt to sell more than owned
 
-    @Test
-    public void testBuyAcao_CarteiraNotFound() {
-        when(acaoService.findById(dto.getIdAcao())).thenReturn(acao);
-        when(carteiraService.findById(dto.getIdCarteira())).thenThrow(new BadRequestException("Carteira não encontrada na base de dados."));
+            BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+                carteiraAcaoService.sellAcao(sellDto);
+            });
 
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            carteiraAcaoService.buyAcao(dto);
-        });
+            assertEquals("Quantidade insuficiente para venda", exception.getMessage());
+            verify(usuarioService, never()).addSaldo(anyDouble());
+            verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
+            verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));
+        }
 
-        assertEquals("Carteira não encontrada na base de dados.", exception.getMessage());
-        verify(usuarioService, never()).removeSaldo(anyDouble());
-        verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
-        verify(historicoComprasRepository, never()).save(any(HistoricoCompras.class));
-    }
+        @Test
+        public void testSellAcao_AcaoNotFoundInCarteira() {
+            when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
+            when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
+            when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.empty());
 
-    @Test
-    public void testBuyAcao_InsufficientBalance() {
-        when(acaoService.findById(dto.getIdAcao())).thenReturn(acao);
-        when(carteiraService.findById(dto.getIdCarteira())).thenReturn(carteira);
-        doThrow(new BadRequestException("Saldo insuficiente para realizar esta transação!"))
-                .when(usuarioService).removeSaldo(anyDouble());
+            BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+                carteiraAcaoService.sellAcao(sellDto);
+            });
 
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            carteiraAcaoService.buyAcao(dto);
-        });
-
-        assertEquals("Saldo insuficiente para realizar esta transação!", exception.getMessage());
-        verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
-        verify(historicoComprasRepository, never()).save(any(HistoricoCompras.class));
+            assertEquals("Ação não encontrada na carteira", exception.getMessage());
+            verify(usuarioService, never()).addSaldo(anyDouble());
+            verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
+            verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));
+        }
     }
 }

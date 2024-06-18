@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,5 +42,5 @@ public class Acao {
     private Set<CarteiraAcao> carteiraAcoes;
 
     @OneToMany(mappedBy = "acao")
-    private Set<HistoricoCompras> historicoCompras;
+    private Set<HistoricoTransacao> historicoTransacoes;
 }

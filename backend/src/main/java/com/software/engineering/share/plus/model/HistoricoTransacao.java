@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "historico_compras", schema = "share_plus")
+@Table(name = "historico_transacao", schema = "share_plus")
 @Getter
 @Setter
-public class HistoricoCompras {
+public class HistoricoTransacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +42,8 @@ public class HistoricoCompras {
     @JoinColumn(name = "id_acao", nullable = false)
     private Acao acao;
 
-    @Column(name = "data_compra", nullable = false)
-    private LocalDateTime dataCompra;
+    @Column(name = "data_transacao", nullable = false)
+    private LocalDateTime dataTransacao;
 
     @Column(nullable = false)
     private Integer quantidade;
@@ -54,10 +54,11 @@ public class HistoricoCompras {
     @Column(name = "fl_compra", nullable = false)
     private Boolean isCompra;
 
-    public HistoricoCompras(Carteira carteira, Acao acao, Integer quantidade, Double valor, boolean isCompra) {
+    public HistoricoTransacao(Carteira carteira, Acao acao, Integer quantidade, Double valor, boolean isCompra) {
+        this.carteira = carteira;
         this.usuario = carteira.getUsuario();
         this.acao = acao;
-        this.dataCompra = LocalDateTime.now();
+        this.dataTransacao = LocalDateTime.now();
         this.quantidade = quantidade;
         this.valor = valor;
         this.isCompra = isCompra;

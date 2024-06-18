@@ -16,7 +16,7 @@ public class UsuarioDTO {
     private String nome;
     private String email;
     private Double saldo;
-    private Set<HistoricoComprasDTO> historicoCompras;
+    private Set<HistoricoTransacaoDTO> historicoCompras;
     private LocalDateTime dataCadastro;
     private Set<CarteiraDTO> carteiras;
 }

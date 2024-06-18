@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
+import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
 import com.software.engineering.share.plus.model.CarteiraAcao;
 import com.software.engineering.share.plus.service.CarteiraAcaoService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarteiraAcaoController {
     private final CarteiraAcaoService carteiraAcaoService;
 
-    @PostMapping("/buy-acao")
+    @PostMapping("/buy")
     public ResponseEntity<CarteiraAcao> buyAcao(@RequestBody BuyAcaoDTO dto) {
         return ResponseEntity.ok(carteiraAcaoService.buyAcao(dto));
+    }
+
+    @PostMapping("/sell")
+    public ResponseEntity<CarteiraAcao> buyAcao(@RequestBody SellAcaoDTO dto) {
+
+        return ResponseEntity.ok(carteiraAcaoService.sellAcao(dto));
     }
 }

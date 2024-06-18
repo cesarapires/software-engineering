@@ -1,12 +1,14 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
+import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.model.CarteiraAcao;
-import com.software.engineering.share.plus.model.HistoricoCompras;
+import com.software.engineering.share.plus.model.HistoricoTransacao;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
-import com.software.engineering.share.plus.repository.HistoricoComprasRepository;
+import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class CarteiraAcaoService {
     private final CarteiraService carteiraService;
     private final UsuarioService usuarioService;
     private final CarteiraAcaoRepository carteiraAcaoRepository;
-    private final HistoricoComprasRepository historicoComprasRepository;
+    private final HistoricoTransacaoRepository historicoTransacaoRepository;
 
     @Transactional
     public CarteiraAcao buyAcao(BuyAcaoDTO dto) {
@@ -38,10 +40,48 @@ public class CarteiraAcaoService {
         }
 
         carteiraAcaoRepository.save(carteiraAcao);
-        historicoComprasRepository.save(
-                new HistoricoCompras(carteira, acao, dto.getQuantidade(), totalTransacao, true)
-        );
+        saveHistoricoTransacao(carteira, acao, dto.getQuantidade(), totalTransacao, true);
 
         return carteiraAcao;
+    }
+
+    @Transactional
+    public CarteiraAcao sellAcao(SellAcaoDTO dto) {
+        Acao acao = acaoService.findById(dto.getIdAcao());
+        Carteira carteira = carteiraService.findById(dto.getIdCarteira());
+        CarteiraAcao carteiraAcao = findCarteiraAcao(carteira, acao);
+        validateQuantidade(carteiraAcao, dto.getQuantidade());
+
+        Double totalTransacao = acao.getPreco() * dto.getQuantidade();
+        removeQuantidade(carteiraAcao, dto.getQuantidade());
+        usuarioService.addSaldo(totalTransacao);
+        saveHistoricoTransacao(carteira, acao, dto.getQuantidade(), totalTransacao, false);
+        return carteiraAcao;
+    }
+
+    private CarteiraAcao findCarteiraAcao(Carteira carteira, Acao acao) {
+        return carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)
+                .orElseThrow(() -> new BadRequestException("Ação não encontrada na carteira"));
+    }
+
+    private void validateQuantidade(CarteiraAcao carteiraAcao, int quantidade) {
+        if (carteiraAcao.getQuantidade() < quantidade) {
+            throw new BadRequestException("Quantidade insuficiente para venda");
+        }
+    }
+
+    private void removeQuantidade(CarteiraAcao carteiraAcao, int quantidade) {
+        carteiraAcao.setQuantidade(carteiraAcao.getQuantidade() - quantidade);
+        if (carteiraAcao.getQuantidade() == 0) {
+            carteiraAcaoRepository.delete(carteiraAcao);
+        } else {
+            carteiraAcaoRepository.save(carteiraAcao);
+        }
+    }
+
+    private void saveHistoricoTransacao(Carteira carteira, Acao acao, int quantidade, Double totalTransacao, boolean isCompra) {
+        historicoTransacaoRepository.save(
+                new HistoricoTransacao(carteira, acao, quantidade, totalTransacao, isCompra)
+        );
     }
 }

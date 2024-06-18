@@ -5,7 +5,7 @@ import com.software.engineering.share.plus.model.Usuario;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 
-@Mapper(componentModel = "spring", uses = {HistoricoComprasMapper.class})
+@Mapper(componentModel = "spring", uses = {HistoricoTransacaoMapper.class})
 public interface UsuarioMapper extends Converter<Usuario, UsuarioDTO> {
 
     UsuarioDTO convert(Usuario usuario);

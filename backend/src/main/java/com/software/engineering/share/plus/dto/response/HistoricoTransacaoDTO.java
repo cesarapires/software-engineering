@@ -1,6 +1,5 @@
 package com.software.engineering.share.plus.dto.response;
 
-import com.software.engineering.share.plus.model.Acao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HistoricoComprasDTO {
+public class HistoricoTransacaoDTO {
 
     private Long id;
     private AcaoDTO acao;
-    private LocalDateTime dataCompra;
+    private LocalDateTime dataTransacao;
     private Integer quantidade;
     private Double valor;
 }

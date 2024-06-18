@@ -1,10 +1,11 @@
 package com.software.engineering.share.plus.util;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
+import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.model.CarteiraAcao;
-import com.software.engineering.share.plus.model.HistoricoCompras;
+import com.software.engineering.share.plus.model.HistoricoTransacao;
 import com.software.engineering.share.plus.model.Usuario;
 
 public class MockEntityFactory {
@@ -41,7 +42,15 @@ public class MockEntityFactory {
         return new CarteiraAcao(quantidade, acao, carteira);
     }
 
-    public static HistoricoCompras createHistoricoCompras(Carteira carteira, Acao acao, int quantidade, Double totalTransacao) {
-        return new HistoricoCompras(carteira, acao, quantidade, totalTransacao, true);
+    public static HistoricoTransacao createHistoricoTransacao(Carteira carteira, Acao acao, int quantidade, Double totalTransacao) {
+        return new HistoricoTransacao(carteira, acao, quantidade, totalTransacao, true);
+    }
+
+    public static SellAcaoDTO createSellAcaoDTO(Long idAcao, Long idCarteira, int quantidade) {
+        SellAcaoDTO dto = new SellAcaoDTO();
+        dto.setIdAcao(idAcao);
+        dto.setIdCarteira(idCarteira);
+        dto.setQuantidade(quantidade);
+        return dto;
     }
 }
