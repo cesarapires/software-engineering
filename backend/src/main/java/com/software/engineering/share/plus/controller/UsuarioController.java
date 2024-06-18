@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +34,17 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> findById(@RequestParam Long id) {
         UsuarioDTO usuarioDTO = usuarioService.findUsuario(id);
         return ResponseEntity.ok(usuarioDTO);
+    }
+
+    @PostMapping("/add-saldo")
+    public ResponseEntity<Void> addSaldo(@RequestParam Double valor) {
+        usuarioService.addSaldo(valor);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<Void> withdraw(@RequestParam Double valor) {
+        usuarioService.removeSaldo(valor);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.response.UsuarioDTO;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -29,6 +30,9 @@ public class UsuarioService {
 
     @Transactional
     public void addSaldo(Usuario usuario, Double valor) {
+        if (valor <= 0) {
+            throw new BadRequestException("Valor a ser depositado deve ser positivo.");
+        }
         usuario.setSaldo(usuario.getSaldo() + valor);
         usuarioRepository.save(usuario);
     }
@@ -42,6 +46,9 @@ public class UsuarioService {
 
     @Transactional
     public void removeSaldo(Usuario usuario, Double valor) {
+        if (valor <= 0) {
+            throw new BadRequestException("Valor a ser sacado deve ser positivo.");
+        }
         usuario.checkSaldo(valor);
         usuario.setSaldo(usuario.getSaldo() - valor);
         usuarioRepository.save(usuario);
