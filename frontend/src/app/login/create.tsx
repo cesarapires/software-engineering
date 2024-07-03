@@ -54,7 +54,12 @@ export default function CreateAccount({ handleBack }: CreateAccountProps) {
         toast({ title: 'Conta cadastrada com sucesso!' })
         handleBack()
       })
-      .catch(() => toast({ title: 'Falha ao cadastrar conta' }))
+      .catch(err => {
+        toast({
+          title: 'Falha ao cadastrar conta',
+          description: err.response?.data?.details,
+        })
+      })
   }
 
   return (

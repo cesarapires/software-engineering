@@ -73,6 +73,9 @@ const config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
+      gridTemplateColumns: {
+        app: 'minmax(18rem, 20rem) 1fr',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

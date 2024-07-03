@@ -2,8 +2,11 @@ package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.LoginDTO;
 import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +24,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public Usuario signup(RegisterUserDTO input) {
+        if (usuarioRepository.existsByEmail(input.getEmail())) {
+            throw new BadRequestException("Email já cadastrado");
+        };
+
         Usuario usuario = new Usuario();
         LocalDateTime now = LocalDateTime.now();
 
@@ -40,5 +47,12 @@ public class AuthenticationService {
         );
 
         return (Usuario) authenticate.getPrincipal();
+    }
+
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }
