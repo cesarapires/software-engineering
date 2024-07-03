@@ -15,12 +15,10 @@ const Sidebar = () => {
   const { nome, saldo, setUser } = useUserStore()
 
   useEffect(() => {
-    if (!nome && setUser) {
-      Api.get<Usuario>('/v1/usuario/me').then(response => {
-        setUser(response.data)
-      })
-    }
-  }, [nome, setUser])
+    Api.get<Usuario>('/v1/usuario/me').then(response => {
+      setUser(response.data)
+    })
+  }, [setUser])
   return (
     <aside
       id="sidebar"
