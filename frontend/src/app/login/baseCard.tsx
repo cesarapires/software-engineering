@@ -17,7 +17,7 @@ interface BaseCardProps {
   children: ReactNode
 }
 
-const BaseCard = ({ type, children }: BaseCardProps) => {
+export function BaseCard({ type, children }: BaseCardProps) {
   const isLoginCard = type === 'LOGIN'
   return (
     <Card className="relative w-[400px]">
@@ -49,5 +49,3 @@ const BaseCard = ({ type, children }: BaseCardProps) => {
     </Card>
   )
 }
-
-export default BaseCard

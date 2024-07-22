@@ -1,15 +1,16 @@
 'use client'
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import Logo from '../../../public/logo.svg'
-import NavLink from './navlink'
+import { NavLink } from './navlink'
 import { CircleDollarSign, Home, LogOut, Wallet } from 'lucide-react'
-import { Button, buttonVariants } from '../ui/button'
+import { buttonVariants } from '../ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/stores/user-store'
 import Api from '@/lib/api'
 import { Usuario } from '@/types/usuario'
+import { ModalDepositar } from './modal-depositar'
 
 const Sidebar = () => {
   const { nome, saldo, setUser } = useUserStore()
@@ -40,7 +41,7 @@ const Sidebar = () => {
               currency: 'BRL',
             })}
           </h2>
-          <a>Depositar</a>
+          <ModalDepositar />
         </div>
       </section>
       <div className="mt-8 flex grow flex-col justify-between">

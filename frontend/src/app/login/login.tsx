@@ -1,16 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import Logo from '../../../public/logo.svg'
-import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -25,14 +13,14 @@ import Api from '@/lib/api'
 import { JwtResponse } from '@/types/jwtResponse'
 import { useToast } from '@/components/ui/use-toast'
 import { LoginType, loginSchema } from './schema'
-import BaseCard from './baseCard'
+import { BaseCard } from './baseCard'
 import { useRouter } from 'next/navigation'
 
 interface LoginProps {
   handleClickCreateAccount: () => void
 }
 
-export default function Login({ handleClickCreateAccount }: LoginProps) {
+export function Login({ handleClickCreateAccount }: LoginProps) {
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },

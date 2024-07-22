@@ -10,7 +10,7 @@ interface NavLinkProps {
   id?: string
 }
 
-const NavLink = ({ icon, text, id, href }: NavLinkProps) => {
+export function NavLink({ icon, text, id, href }: NavLinkProps) {
   const pathname = usePathname()
   const bgColorClass =
     pathname === href ? 'bg-yellow-500' : 'hover:bg-slate-100'
@@ -27,5 +27,3 @@ const NavLink = ({ icon, text, id, href }: NavLinkProps) => {
     </nav>
   )
 }
-
-export default NavLink

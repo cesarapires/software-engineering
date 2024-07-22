@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Login from './login'
-import CreateAccount from './create'
+import { Login } from './login'
+import { CreateAccount } from './create'
 
 export default function Component() {
   const [isLoginView, setIsLoginView] = useState<boolean>(true)
