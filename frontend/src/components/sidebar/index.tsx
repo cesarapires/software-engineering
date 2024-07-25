@@ -8,18 +8,14 @@ import { buttonVariants } from '../ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/stores/user-store'
-import Api from '@/lib/api'
-import { Usuario } from '@/types/usuario'
 import { ModalDepositar } from './modal-depositar'
 
 const Sidebar = () => {
-  const { nome, saldo, setUser } = useUserStore()
+  const { nome, saldo, fetchUser } = useUserStore()
 
   useEffect(() => {
-    Api.get<Usuario>('/v1/usuario/me').then(response => {
-      setUser(response.data)
-    })
-  }, [setUser])
+    fetchUser()
+  }, [fetchUser])
   return (
     <aside
       id="sidebar"

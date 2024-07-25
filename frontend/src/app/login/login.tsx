@@ -31,7 +31,7 @@ export function Login({ handleClickCreateAccount }: LoginProps) {
   function onSubmit(values: LoginType) {
     Api.post<JwtResponse>('/api/signin', values)
       .then(() => router.push('/'))
-      .catch(() => toast({ title: 'Falha ao realizar login' }))
+      .catch(() => toast({ title: 'Email e/ou senha inválidos' }))
   }
 
   return (

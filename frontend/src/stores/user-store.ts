@@ -1,18 +1,22 @@
 import { Usuario } from '@/types/usuario'
 import { create } from 'zustand'
+import Api from '@/lib/api'
 
 interface UserStore extends Usuario {
-  setUser: (user: Usuario | null) => void
+  fetchUser: () => Promise<boolean>
 }
 
 export const useUserStore = create<UserStore>()((set, get) => ({
   ...get(),
-  setUser: (user: Usuario | null) => {
-    if (!user) {
-      set({}, true)
-      return
+  fetchUser: async () => {
+    try {
+      const response = await Api.get<Usuario>('/v1/usuario/me')
+      const auxUser: Usuario = response.data
+      set(() => ({ ...auxUser }))
+      return true
+    } catch (e) {
+      console.error(e)
+      return false
     }
-
-    set(() => ({ ...user }))
   },
 }))

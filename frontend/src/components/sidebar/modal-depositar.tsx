@@ -10,32 +10,49 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import MoneyInput from '../money-input'
 import { useForm } from 'react-hook-form'
 import { Form } from '../ui/form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Api from '@/lib/api'
+import { useState } from 'react'
+import { useUserStore } from '@/stores/user-store'
 
 const schema = z.object({
   amount: z.coerce.number().min(0.01, 'Obrigatório'),
 })
 
 export function ModalDepositar() {
+  const [open, setOpen] = useState<boolean>(false)
+  const { fetchUser } = useUserStore()
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       amount: 0,
     },
-    mode: 'onTouched',
+    mode: 'onChange',
   })
+
+  const handleDeposit = () => {
+    Api.post('/v1/usuario/add-saldo', undefined, {
+      params: { valor: form.getValues().amount },
+    }).then(() => {
+      fetchUser()
+      form.reset()
+      setOpen(false)
+    })
+  }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <a className="cursor-pointer">Depositar</a>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onCloseAutoFocus={() => form.reset()}
+      >
         <DialogHeader>
           <DialogTitle>Depositar</DialogTitle>
           <DialogDescription>
@@ -43,7 +60,11 @@ export function ModalDepositar() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form className="grid gap-4 py-4">
+          <form
+            id="form-deposit"
+            className="grid gap-4 py-4"
+            onSubmit={form.handleSubmit(handleDeposit)}
+          >
             <div className="grid gap-2">
               <MoneyInput
                 form={form}
@@ -55,7 +76,11 @@ export function ModalDepositar() {
           </form>
         </Form>
         <DialogFooter>
-          <Button type="submit" disabled={!form.formState.isValid}>
+          <Button
+            type="submit"
+            disabled={!form.formState.isValid}
+            form="form-deposit"
+          >
             Depositar
           </Button>
         </DialogFooter>
