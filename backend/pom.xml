@@ -88,6 +88,10 @@
 			<artifactId>mapstruct-spring-annotations</artifactId>
 			<version>${org.mapstruct.extensions.spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

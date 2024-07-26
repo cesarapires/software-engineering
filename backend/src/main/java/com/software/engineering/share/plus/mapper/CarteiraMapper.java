@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.springframework.core.convert.converter.Converter;
 
 @Mapper(componentModel = "spring", uses = UsuarioMapper.class)
-public interface CarteiraMapper extends Converter<Carteira, CarteiraDTO> {
+public interface CarteiraMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "carteiraAcoes", ignore = true)
     @Mapping(target = "usuario", source = "idUsuario")

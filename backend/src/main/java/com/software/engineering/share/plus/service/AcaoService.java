@@ -1,9 +1,13 @@
 package com.software.engineering.share.plus.service;
 
+import com.software.engineering.share.plus.dto.response.AcaoDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
+import com.software.engineering.share.plus.mapper.AcaoMapper;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.repository.AcaoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +23,9 @@ public class AcaoService {
 
     public Acao findById(Long id) {
         return acaoRepository.findById(id).orElseThrow(() -> new BadRequestException("Ação não encontrada na base de dados."));
+    }
+
+    public Page<AcaoDTO> findFilteredAcoes(String codigo, Pageable pageable) {
+        return acaoRepository.findByCodigoContaining(codigo, pageable);
     }
 }
