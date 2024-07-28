@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AcaoDTO {
-    private Long id;
+public class AcaoListagemDTO {
     private String nome;
     private String codigo;
-    private String logo;
     private Double preco;
 }

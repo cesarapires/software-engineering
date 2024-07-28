@@ -25,14 +25,16 @@ public class BrapiService {
 
         if (response == null) {
             return;
-
         }
 
         List<Stock> stocks = response.getStocks();
 
         List<Acao> acoes = new ArrayList<>(stocks.size());
-        for ( Stock stock : stocks ) {
-            Acao acao = new Acao();
+        for (Stock stock : stocks) {
+            Acao acao = acaoRepository.findByCodigo(stock.getStock());
+            if (acao == null) {
+                acao = new Acao();
+            }
             acao.setCodigo(stock.getStock());
             acao.setNome(stock.getName());
             acao.setLogo(stock.getLogo());

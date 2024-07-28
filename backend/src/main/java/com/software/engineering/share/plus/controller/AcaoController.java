@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.response.AcaoDTO;
+import com.software.engineering.share.plus.dto.response.AcaoListagemDTO;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.service.AcaoService;
 import com.software.engineering.share.plus.service.BrapiService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "${api-prefix}/acao")
 @RequiredArgsConstructor
@@ -23,8 +26,8 @@ public class AcaoController {
     private final BrapiService brapiService;
 
     @GetMapping("find-filtered")
-    public Page<AcaoDTO> buscarAcoes(@RequestParam(required = false) String codigo, Pageable pageable) {
-        return acaoService.findFilteredAcoes(codigo, pageable);
+    public List<AcaoListagemDTO> buscarAcoes() {
+        return acaoService.findFilteredAcoes();
     }
 
     @PostMapping("update")

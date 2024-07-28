@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -43,4 +44,17 @@ public class Acao {
 
     @OneToMany(mappedBy = "acao")
     private Set<HistoricoTransacao> historicoTransacoes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Acao acao = (Acao) o;
+        return codigo.equals(acao.codigo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo);
+    }
 }

@@ -10,34 +10,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { MoneyInput } from '../money-input'
 import { useForm } from 'react-hook-form'
-import { Form } from '../ui/form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Api from '@/lib/api'
 import { useState } from 'react'
 import { useUserStore } from '@/stores/user-store'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { MoneyInput } from '@/components/money-input'
+import { Input } from '@/components/ui/input'
 
 const schema = z.object({
-  amount: z.coerce.number().min(0.01, 'Obrigatório'),
+  quantidade: z.coerce.number().min(1, 'Obrigatório'),
 })
 
-export function ModalDepositar() {
+export function ModalComprarAcao() {
   const [open, setOpen] = useState<boolean>(false)
   const { fetchUser } = useUserStore()
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      amount: 0,
+      quantidade: 0,
     },
     mode: 'onChange',
   })
 
   const handleDeposit = () => {
     Api.post('/v1/usuario/add-saldo', undefined, {
-      params: { valor: form.getValues().amount },
+      params: { valor: form.getValues().quantidade },
     }).then(() => {
       fetchUser()
       form.reset()
@@ -46,9 +54,6 @@ export function ModalDepositar() {
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <a className="cursor-pointer">Depositar</a>
-      </DialogTrigger>
       <DialogContent
         className="sm:max-w-[425px]"
         onCloseAutoFocus={() => form.reset()}
@@ -66,11 +71,22 @@ export function ModalDepositar() {
             onSubmit={form.handleSubmit(handleDeposit)}
           >
             <div className="grid gap-2">
-              <MoneyInput
-                form={form}
-                label="Quantia"
-                name="amount"
-                placeholder="Preencha o valor a ser depositado"
+              <FormField
+                control={form.control}
+                name="quantidade"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Quantidade</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Digite a quantidade ..."
+                        type="number"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
           </form>

@@ -19,7 +19,7 @@ const Sidebar = () => {
   return (
     <aside
       id="sidebar"
-      className="flex flex-col border-r border-zinc-200 bg-amber-50 px-5 py-8"
+      className="fixed left-0 top-0 flex h-full w-64 flex-col border-r border-zinc-200 bg-amber-50 px-5 py-8"
     >
       <section className="flex flex-col items-center gap-8" id="user_details">
         <Image

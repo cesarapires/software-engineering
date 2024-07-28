@@ -18,7 +18,7 @@ type TextInputProps = {
 }
 
 // Brazilian currency config
-const moneyFormatter = Intl.NumberFormat('pt-BR', {
+export const moneyFormatter = Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
   currencyDisplay: 'symbol',
   currencySign: 'standard',
@@ -27,7 +27,7 @@ const moneyFormatter = Intl.NumberFormat('pt-BR', {
   maximumFractionDigits: 2,
 })
 
-export default function MoneyInput(props: TextInputProps) {
+export function MoneyInput(props: TextInputProps) {
   const initialValue = props.form.getValues()[props.name]
     ? moneyFormatter.format(props.form.getValues()[props.name])
     : ''

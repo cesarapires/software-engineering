@@ -6,23 +6,23 @@ import Api from '@/lib/api'
 import { useEffect, useState } from 'react'
 import { Acao as IAcao } from '@/types/acao'
 import { Page } from '@/types/page'
+import { ModalComprarAcao } from './modal-comprar-acao'
 
 export default function Acao() {
   const [data, setData] = useState<IAcao[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    Api.get<Page<IAcao>>('/v1/acao/find-filtered', {
-      params: {
-        codigo: '',
-        page: 0,
-        size: 1000,
-      },
-    }).then(res => setData(res.data.content))
+    Api.get<IAcao[]>('/v1/acao/find-filtered').then(res => {
+      setData(res.data)
+      setIsLoading(false)
+    })
   }, [])
 
   return (
     <>
-      <DataTable data={data} columns={columns} />
+      <DataTable data={data} columns={columns} isLoading={isLoading} />
+      <ModalComprarAcao />
     </>
   )
 }

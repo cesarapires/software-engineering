@@ -31,9 +31,11 @@ export default function RootLayout({
         {pathname === '/login' ? (
           <main>{children}</main>
         ) : (
-          <div className="grid min-h-screen grid-cols-app">
+          <div className="min-h-screen grid-cols-app">
             <Sidebar />
-            <main className="px-4 pb-12 pt-8">{children}</main>
+            <main className="ml-64 overflow-auto px-4 pb-12 pt-8">
+              {children}
+            </main>
           </div>
         )}
         <Toaster />
