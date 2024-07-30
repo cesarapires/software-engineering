@@ -8,13 +8,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Api from '@/lib/api'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useUserStore } from '@/stores/user-store'
 import {
   Form,
@@ -24,33 +23,59 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { MoneyInput } from '@/components/money-input'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Acao } from '@/types/acao'
+import { useToast } from '@/components/ui/use-toast'
 
 const schema = z.object({
   quantidade: z.coerce.number().min(1, 'Obrigatório'),
+  idCarteira: z.coerce.number().min(1, 'Obrigatório'),
 })
 
-export function ModalComprarAcao() {
-  const [open, setOpen] = useState<boolean>(false)
-  const { fetchUser } = useUserStore()
+interface Props {
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+  acao: Acao | undefined
+}
+
+export function ModalComprarAcao({ open, setOpen, acao }: Props) {
+  const { fetchUser, carteiras } = useUserStore()
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       quantidade: 0,
+      idCarteira: 0,
     },
     mode: 'onChange',
   })
 
-  const handleDeposit = () => {
-    Api.post('/v1/usuario/add-saldo', undefined, {
-      params: { valor: form.getValues().quantidade },
-    }).then(() => {
-      fetchUser()
-      form.reset()
-      setOpen(false)
-    })
+  const handlePurchase = () => {
+    const dto = {
+      ...form.getValues(),
+      idAcao: acao?.id,
+    }
+    Api.post('/v1/carteira-acao/purchase', dto)
+      .then(() => {
+        toast({ title: 'Ações adicionadas a carteira com sucesso' })
+        fetchUser()
+        form.reset()
+        setOpen(false)
+      })
+      .catch(err => {
+        toast({
+          title: 'Não foi possível comprar a ação',
+          description: err.response?.data?.details,
+        })
+      })
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -59,18 +84,48 @@ export function ModalComprarAcao() {
         onCloseAutoFocus={() => form.reset()}
       >
         <DialogHeader>
-          <DialogTitle>Depositar</DialogTitle>
+          <DialogTitle>{`Comprar a ação ${acao ? acao.codigo : ''}`}</DialogTitle>
           <DialogDescription>
-            Deposite o saldo desejado para comprar suas ações
+            Escolha a carteira e a quantidade de ações que deseja comprar
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
-            id="form-deposit"
+            id="form-buy-stock"
             className="grid gap-4 py-4"
-            onSubmit={form.handleSubmit(handleDeposit)}
+            onSubmit={form.handleSubmit(handlePurchase)}
           >
             <div className="grid gap-2">
+              <FormField
+                control={form.control}
+                name="idCarteira"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Carteira</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={String(field.value)}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a verified email to display" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {carteiras.map(carteira => (
+                          <SelectItem
+                            value={carteira.id.toString()}
+                            key={carteira.id}
+                          >
+                            {carteira.nome}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="quantidade"
@@ -82,6 +137,7 @@ export function ModalComprarAcao() {
                         {...field}
                         placeholder="Digite a quantidade ..."
                         type="number"
+                        min={0}
                       />
                     </FormControl>
                     <FormMessage />
@@ -94,10 +150,10 @@ export function ModalComprarAcao() {
         <DialogFooter>
           <Button
             type="submit"
-            disabled={!form.formState.isValid}
-            form="form-deposit"
+            disabled={!form.formState.isValid || !acao}
+            form="form-buy-stock"
           >
-            Depositar
+            Comprar
           </Button>
         </DialogFooter>
       </DialogContent>

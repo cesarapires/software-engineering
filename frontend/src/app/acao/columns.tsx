@@ -6,8 +6,12 @@ import { Acao } from '@/types/acao'
 import { DataTableRowActions } from '@/app/acao/data-table-row-actions'
 import { moneyFormatter } from '@/components/money-input'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
+import { Dispatch, SetStateAction } from 'react'
 
-export const columns: ColumnDef<Acao>[] = [
+export const columns = (
+  setOpen: Dispatch<SetStateAction<boolean>>,
+  setAcao: Dispatch<SetStateAction<Acao>>
+): ColumnDef<Acao>[] => [
   {
     accessorKey: 'codigo',
     header: () => <div>Código</div>,
@@ -57,6 +61,8 @@ export const columns: ColumnDef<Acao>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => (
+      <DataTableRowActions row={row} setOpen={setOpen} setAcao={setAcao} />
+    ),
   },
 ]

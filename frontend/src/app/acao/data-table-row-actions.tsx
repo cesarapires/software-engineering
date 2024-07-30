@@ -10,15 +10,25 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Settings } from 'lucide-react'
+import { Dispatch, SetStateAction } from 'react'
+import { Acao, AcaoSchema } from '@/types/acao'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
+  setOpen: Dispatch<SetStateAction<boolean>>
+  setAcao: Dispatch<SetStateAction<Acao>>
 }
 
 export function DataTableRowActions<TData>({
   row,
+  setOpen,
+  setAcao,
 }: DataTableRowActionsProps<TData>) {
-  // const task = taskSchema.parse(row.original)
+  const handleOpen = () => {
+    const acao = AcaoSchema.parse(row.original)
+    setAcao(acao)
+    setOpen(true)
+  }
 
   return (
     <DropdownMenu>
@@ -33,7 +43,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>Visualizar</DropdownMenuItem>
-        <DropdownMenuItem>Comprar</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleOpen}>Comprar</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

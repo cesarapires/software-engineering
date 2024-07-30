@@ -17,7 +17,7 @@ public interface AcaoRepository extends JpaRepository<Acao, Long> {
             "FROM Acao a WHERE a.codigo LIKE %:codigo%")
     List<AcaoDTO> findByCodigoContaining(String codigo);
 
-    @Query("SELECT new com.software.engineering.share.plus.dto.response.AcaoListagemDTO(a.nome, a.codigo, a.preco) " +
+    @Query("SELECT new com.software.engineering.share.plus.dto.response.AcaoListagemDTO(a.id, a.nome, a.codigo, a.preco) " +
             "FROM Acao a")
     List<AcaoListagemDTO> findAllDTO();
 

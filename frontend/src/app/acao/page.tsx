@@ -10,7 +10,14 @@ import { ModalComprarAcao } from './modal-comprar-acao'
 
 export default function Acao() {
   const [data, setData] = useState<IAcao[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
+  const [selectedAcao, setSelectedAcao] = useState<IAcao>({
+    codigo: '',
+    id: 0,
+    preco: 0,
+    nome: '',
+  })
 
   useEffect(() => {
     Api.get<IAcao[]>('/v1/acao/find-filtered').then(res => {
@@ -21,8 +28,12 @@ export default function Acao() {
 
   return (
     <>
-      <DataTable data={data} columns={columns} isLoading={isLoading} />
-      <ModalComprarAcao />
+      <DataTable
+        data={data}
+        columns={columns(setOpen, setSelectedAcao)}
+        isLoading={isLoading}
+      />
+      <ModalComprarAcao open={open} setOpen={setOpen} acao={selectedAcao} />
     </>
   )
 }

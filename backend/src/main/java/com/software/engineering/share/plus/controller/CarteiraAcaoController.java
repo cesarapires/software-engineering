@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarteiraAcaoController {
     private final CarteiraAcaoService carteiraAcaoService;
 
-    @PostMapping("/buy")
-    public ResponseEntity<CarteiraAcao> buyAcao(@RequestBody BuyAcaoDTO dto) {
+    @PostMapping("/purchase")
+    public ResponseEntity<CarteiraAcao> purchaseAcao(@RequestBody BuyAcaoDTO dto) {
         return ResponseEntity.ok(carteiraAcaoService.buyAcao(dto));
     }
 
