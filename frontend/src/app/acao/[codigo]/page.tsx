@@ -6,6 +6,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import Api from '@/lib/api'
+import { AcaoDetail, HistoricalDataPrice } from '@/types/acaoDatail'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import {
@@ -21,7 +22,7 @@ export default function VisualizarAcao({
 }: {
   params: { codigo: string }
 }) {
-  const [acao, setAcao] = useState()
+  const [acao, setAcao] = useState<AcaoDetail>()
 
   useEffect(() => {
     Api.get(`/v1/acao/${params.codigo}`).then(response =>
@@ -35,7 +36,7 @@ export default function VisualizarAcao({
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Image
-            src={acao?.logourl}
+            src={acao?.logourl || ''}
             width={40}
             height={40}
             alt="Company Logo"
@@ -49,13 +50,13 @@ export default function VisualizarAcao({
         <div className="text-2xl font-bold">$102.50</div>
       </div>
 
-      <LinechartChart data={acao?.historicalDataPrice} />
+      <LinechartChart data={acao?.historicalDataPrice || []} />
     </div>
   )
 }
 
 interface LinechartProps {
-  data: any[]
+  data: HistoricalDataPrice[]
 }
 
 function LinechartChart({ data }: LinechartProps) {
