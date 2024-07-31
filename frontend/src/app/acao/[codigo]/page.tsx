@@ -60,46 +60,44 @@ interface LinechartProps {
 
 function LinechartChart({ data }: LinechartProps) {
   return (
-    <div>
-      <ResponsiveContainer>
-        <ChartContainer
-          config={{
-            desktop: {
-              label: 'Desktop',
-              color: 'hsl(var(--chart-4))',
-            },
+    <ResponsiveContainer width="100%" height={600} minWidth={150}>
+      <ChartContainer
+        config={{
+          close: {
+            label: 'Valor',
+            color: 'hsl(var(--chart-4))',
+          },
+        }}
+      >
+        <LineChart
+          accessibilityLayer
+          data={data}
+          margin={{
+            left: 12,
+            right: 12,
           }}
         >
-          <LineChart
-            accessibilityLayer
-            data={data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={value => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Line
-              dataKey="close"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      </ResponsiveContainer>
-    </div>
+          <CartesianGrid vertical={true} />
+          <XAxis
+            dataKey="date"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            interval={0}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Line
+            dataKey="close"
+            type="natural"
+            stroke="var(--color-close)"
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ChartContainer>
+    </ResponsiveContainer>
   )
 }

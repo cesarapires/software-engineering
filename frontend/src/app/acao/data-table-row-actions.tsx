@@ -12,6 +12,7 @@ import {
 import { Settings } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 import { Acao, AcaoSchema } from '@/types/acao'
+import { useRouter } from 'next/navigation'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -24,10 +25,16 @@ export function DataTableRowActions<TData>({
   setOpen,
   setAcao,
 }: DataTableRowActionsProps<TData>) {
+  const navigate = useRouter()
   const handleOpen = () => {
     const acao = AcaoSchema.parse(row.original)
     setAcao(acao)
     setOpen(true)
+  }
+
+  const handleView = () => {
+    const acao = AcaoSchema.parse(row.original)
+    navigate.push(`/acao/${acao.codigo}`)
   }
 
   return (
@@ -42,7 +49,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Visualizar</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleView}>Visualizar</DropdownMenuItem>
         <DropdownMenuItem onClick={handleOpen}>Comprar</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
