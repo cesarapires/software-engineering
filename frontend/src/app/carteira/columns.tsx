@@ -7,26 +7,12 @@ import { DataTableRowActions } from '@/app/acao/data-table-row-actions'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Dispatch, SetStateAction } from 'react'
 import { moneyFormatter } from '@/lib/utils'
+import { CarteiraListagem } from '@/types/carteiraListagem'
 
 export const columns = (
   setOpen: Dispatch<SetStateAction<boolean>>,
   setAcao: Dispatch<SetStateAction<Acao>>
-): ColumnDef<Acao>[] => [
-  {
-    accessorKey: 'codigo',
-    header: () => <div>Código</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[80px] truncate font-medium">
-            {row.getValue('codigo')}
-          </span>
-        </div>
-      )
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
+): ColumnDef<CarteiraListagem>[] => [
   {
     accessorKey: 'nome',
     header: () => <div>Nome</div>,
@@ -44,32 +30,15 @@ export const columns = (
     enableHiding: false,
   },
   {
-    accessorKey: 'setor',
+    accessorKey: 'total',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Setor" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[120px] font-medium">
-            {row.getValue('setor') || '-'}
-          </span>
-        </div>
-      )
-    },
-    enableHiding: false,
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'preco',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Preço" />
+      <DataTableColumnHeader column={column} title="Valor total" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[80px] truncate font-medium">
-            {moneyFormatter.format(row.getValue('preco'))}
+            {moneyFormatter.format(row.getValue('total'))}
           </span>
         </div>
       )

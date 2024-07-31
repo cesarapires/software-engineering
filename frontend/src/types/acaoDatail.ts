@@ -5,6 +5,7 @@ export type AcaoDetail = {
   logourl: string
   historicalDataPrice: HistoricalDataPrice[]
   close: number
+  sector?: string
 }
 
 export type HistoricalDataPrice = {

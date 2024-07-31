@@ -1,10 +1,14 @@
 package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraListagem;
 import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.service.CarteiraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +31,11 @@ public class CarteiraController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Carteira>> findAll(@RequestParam("idUsuario") Long idUsuario) {
-        return ResponseEntity.ok(carteiraService.findAllByUsuarioId(idUsuario));
+    public ResponseEntity<List<CarteiraListagem>> findAll() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Usuario currentUser = (Usuario) authentication.getPrincipal();
+        return ResponseEntity.ok(carteiraService.findAllByUsuarioId(currentUser.getId()));
     }
 
     @DeleteMapping("/delete")

@@ -5,7 +5,6 @@ import { columns } from './columns'
 import Api from '@/lib/api'
 import { useEffect, useState } from 'react'
 import { Acao as IAcao } from '@/types/acao'
-import { Page } from '@/types/page'
 import { ModalComprarAcao } from './modal-comprar-acao'
 
 export default function Acao() {

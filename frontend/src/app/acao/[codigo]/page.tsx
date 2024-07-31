@@ -16,6 +16,8 @@ import {
   ResponsiveContainer,
   XAxis,
 } from 'recharts'
+import ImageCircle from '../../../../public/image-circle.svg'
+import { formatMoney } from '@/lib/utils'
 
 export default function VisualizarAcao({
   params,
@@ -36,18 +38,24 @@ export default function VisualizarAcao({
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Image
-            src={acao?.logourl || ''}
+            src={acao?.logourl || ImageCircle}
             width={40}
             height={40}
             alt="Company Logo"
             className="rounded-full"
           />
           <div>
-            <h2 className="text-lg font-bold">{acao?.longName}</h2>
+            <h2 className="text-lg font-bold">
+              {acao?.longName || acao?.shortName}
+            </h2>
             <p className="text-sm text-muted-foreground">{acao?.symbol}</p>
           </div>
+          <div className="flex items-end">
+            <p className="text-sm text-muted-foreground">{acao?.sector}</p>
+          </div>
         </div>
-        <div className="text-2xl font-bold">$102.50</div>
+
+        <div className="text-2xl font-bold">{formatMoney(acao?.close)}</div>
       </div>
 
       <LinechartChart data={acao?.historicalDataPrice || []} />
@@ -61,7 +69,7 @@ interface LinechartProps {
 
 function LinechartChart({ data }: LinechartProps) {
   return (
-    <ResponsiveContainer width="100%" height={600} minWidth={150}>
+    <ResponsiveContainer width="100%" height={700} minWidth={150}>
       <ChartContainer
         config={{
           close: {
@@ -74,8 +82,8 @@ function LinechartChart({ data }: LinechartProps) {
           accessibilityLayer
           data={data}
           margin={{
-            left: 12,
-            right: 12,
+            left: 20,
+            right: 20,
           }}
         >
           <CartesianGrid vertical={true} />

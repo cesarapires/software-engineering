@@ -1,35 +1,39 @@
-import {
-  Table,
-  TableCaption,
-  TableHeader,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@/components/ui/table'
+'use client'
+
+import { DataTable } from '@/components/data-table/data-table'
+import { columns } from './columns'
+import Api from '@/lib/api'
+import { useEffect, useState } from 'react'
+import { Acao as IAcao } from '@/types/acao'
+import { ModalComprarAcao } from './modal-comprar-acao'
+import { CarteiraListagem } from '@/types/carteiraListagem'
 
 export default function Carteira() {
+  const [data, setData] = useState<CarteiraListagem[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
+  const [selectedAcao, setSelectedAcao] = useState<IAcao>({
+    codigo: '',
+    id: 0,
+    preco: 0,
+    nome: '',
+  })
+
+  useEffect(() => {
+    Api.get<CarteiraListagem[]>('/v1/carteira/all').then(res => {
+      setData(res.data)
+      setIsLoading(false)
+    })
+  }, [])
+
   return (
     <>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <DataTable
+        data={data}
+        columns={columns(setOpen, setSelectedAcao)}
+        isLoading={isLoading}
+      />
+      <ModalComprarAcao open={open} setOpen={setOpen} acao={selectedAcao} />
     </>
   )
 }

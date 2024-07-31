@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -42,4 +43,11 @@ public class Carteira {
     @OneToMany(mappedBy = "carteira")
     @JsonIgnoreProperties(value = {"carteira"})
     private Set<CarteiraAcao> carteiraAcoes;
+
+    public double getTotal() {
+        return carteiraAcoes.stream()
+                .filter(Objects::nonNull)
+                .mapToDouble(ca -> ca.getQuantidade() * ca.getAcao().getPreco())
+                .sum();
+    }
 }

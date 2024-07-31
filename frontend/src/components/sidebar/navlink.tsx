@@ -15,15 +15,16 @@ export function NavLink({ icon, text, id, href }: NavLinkProps) {
   const bgColorClass =
     pathname === href ? 'bg-yellow-500' : 'hover:bg-slate-100'
   return (
-    <nav
+    <Link
       id={id}
       className={
         'flex h-10 min-w-[14rem] max-w-[16rem] items-center justify-center rounded-md ' +
         bgColorClass
       }
+      href={href}
     >
       <div className="pr-5">{icon}</div>
-      <Link href={href}>{text}</Link>
-    </nav>
+      <span>{text}</span>
+    </Link>
   )
 }

@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraListagem;
 import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.exception.EntityAlreadyExistsException;
 import com.software.engineering.share.plus.mapper.CarteiraMapper;
@@ -31,8 +32,10 @@ public class CarteiraService {
         return carteiraRepository.save(carteiraMapper.toEntity(carteira));
     }
 
-    public List<Carteira> findAllByUsuarioId(Long idUsuario) {
-        return carteiraRepository.findAllByUsuarioId(idUsuario);
+    public List<CarteiraListagem> findAllByUsuarioId(Long idUsuario) {
+        List<Carteira> all = carteiraRepository.findAllByUsuarioId(idUsuario);
+
+        return all.stream().map(CarteiraListagem::new).toList();
     }
 
     public Carteira findById(Long id) {

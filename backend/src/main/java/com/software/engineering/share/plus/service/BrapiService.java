@@ -6,6 +6,7 @@ import com.software.engineering.share.plus.dto.response.Stock;
 import com.software.engineering.share.plus.dto.response.StockDetailDTO;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.repository.AcaoRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class BrapiService {
 
     private final AcaoRepository acaoRepository;
 
+    @PostConstruct
     public void fetchAndSaveStocks() {
         String url = brapiUrl + "/quote/list";
 
@@ -65,6 +67,7 @@ public class BrapiService {
         StockDetailDTO stockDetailDTO = response.getResults().get(0);
         if (acao != null) {
             stockDetailDTO.setClose(acao.getPreco());
+            stockDetailDTO.setSector(acao.getSetor());
         }
         return stockDetailDTO;
     }

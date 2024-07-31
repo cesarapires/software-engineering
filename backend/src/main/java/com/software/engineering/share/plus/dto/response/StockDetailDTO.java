@@ -20,4 +20,5 @@ public class StockDetailDTO {
     private String logourl;
     private List<HistoricalDataPrice> historicalDataPrice;
     private Double close;
+    private String sector;
 }
