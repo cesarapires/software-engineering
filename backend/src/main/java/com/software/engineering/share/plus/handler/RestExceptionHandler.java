@@ -85,4 +85,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionDetails, headers, statusCode);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionDetails> handleExceptionGeneral(Exception e) {
+        return new ResponseEntity<>(
+                ExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .title("Exception")
+                        .details(e.getMessage())
+                        .developerMessage(e.getClass().getName())
+                        .build(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }

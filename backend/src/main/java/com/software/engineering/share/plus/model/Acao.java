@@ -39,6 +39,9 @@ public class Acao {
     @Column(nullable = false)
     private Double preco;
 
+    @Column
+    private String setor;
+
     @OneToMany(mappedBy = "acao")
     private Set<CarteiraAcao> carteiraAcoes;
 

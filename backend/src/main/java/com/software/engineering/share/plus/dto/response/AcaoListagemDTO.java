@@ -14,4 +14,5 @@ public class AcaoListagemDTO {
     private String nome;
     private String codigo;
     private Double preco;
+    private String setor;
 }

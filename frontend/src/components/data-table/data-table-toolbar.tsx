@@ -10,7 +10,7 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
-  placeholder = 'Filtrar ...',
+  placeholder = 'Filtrar código...',
 }: DataTableToolbarProps<TData>) {
   return (
     <div className="flex items-center justify-between">

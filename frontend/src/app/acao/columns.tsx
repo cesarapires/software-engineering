@@ -32,7 +32,7 @@ export const columns = (
     header: () => <div>Nome</div>,
     cell: ({ row }) => {
       return (
-        <div className="flex w-[200px] items-center">
+        <div className="flex w-[180px] items-center">
           <span>{row.getValue('nome')}</span>
         </div>
       )
@@ -42,6 +42,23 @@ export const columns = (
     },
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    accessorKey: 'setor',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Setor" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[120px] font-medium">
+            {row.getValue('setor') || '-'}
+          </span>
+        </div>
+      )
+    },
+    enableHiding: false,
+    enableSorting: false,
   },
   {
     accessorKey: 'preco',

@@ -32,3 +32,7 @@ security:
 logging:
   level:
       sql: trace
+
+brapi:
+  url: https://brapi.dev/api
+  token: 6ycfFdTeCR7YtmsQHhnU9G
