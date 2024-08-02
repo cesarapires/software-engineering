@@ -3,14 +3,18 @@
 import { Table } from '@tanstack/react-table'
 import { Input } from '@/components/ui/input'
 
+import { ReactNode } from 'react';
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
   placeholder?: string
+  optionButton?: ReactNode
 }
 
 export function DataTableToolbar<TData>({
   table,
   placeholder = 'Filtrar ...',
+  optionButton,
 }: DataTableToolbarProps<TData>) {
   return (
     <div className="flex items-center justify-between">
@@ -23,6 +27,9 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+      </div>
+      <div>
+        {optionButton}
       </div>
     </div>
   )

@@ -29,16 +29,20 @@ import { DataTablePagination } from './data-table-pagination'
 import { DataTableToolbar } from './data-table-toolbar'
 import { Skeleton } from '../ui/skeleton'
 
+import { ReactNode } from 'react';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   isLoading?: boolean
+  optionButton?: ReactNode
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading = false,
+  optionButton,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -75,7 +79,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} optionButton={optionButton}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
