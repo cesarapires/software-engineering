@@ -4,18 +4,16 @@ import { DataTable } from '@/components/data-table/data-table'
 import { columns } from './columns'
 import Api from '@/lib/api'
 import { useEffect, useState } from 'react'
-import { Acao as IAcao } from '@/types/acao'
-import { ModalComprarAcao } from './modal-comprar-acao'
+import { ModalExcluirCarteira } from './modal-excluir-carteira'
 import { CarteiraListagem } from '@/types/carteiraListagem'
 
 export default function Carteira() {
   const [data, setData] = useState<CarteiraListagem[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
-  const [selectedAcao, setSelectedAcao] = useState<IAcao>({
-    codigo: '',
+  const [selectedCarteira, setSelectedCarteira] = useState<CarteiraListagem>({
     id: 0,
-    preco: 0,
+    total: 0,
     nome: '',
   })
 
@@ -30,10 +28,14 @@ export default function Carteira() {
     <>
       <DataTable
         data={data}
-        columns={columns(setOpen, setSelectedAcao)}
+        columns={columns(setOpen, setSelectedCarteira)}
         isLoading={isLoading}
       />
-      <ModalComprarAcao open={open} setOpen={setOpen} acao={selectedAcao} />
+      <ModalExcluirCarteira
+        open={open}
+        setOpen={setOpen}
+        carteira={selectedCarteira}
+      />
     </>
   )
 }

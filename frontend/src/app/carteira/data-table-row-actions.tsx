@@ -11,30 +11,33 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Settings } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
-import { Acao, AcaoSchema } from '@/types/acao'
 import { useRouter } from 'next/navigation'
+import {
+  CarteiraListagemSchema,
+  CarteiraListagem,
+} from '@/types/carteiraListagem'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
   setOpen: Dispatch<SetStateAction<boolean>>
-  setAcao: Dispatch<SetStateAction<Acao>>
+  setCarteira: Dispatch<SetStateAction<CarteiraListagem>>
 }
 
 export function DataTableRowActions<TData>({
   row,
   setOpen,
-  setAcao,
+  setCarteira,
 }: DataTableRowActionsProps<TData>) {
   const navigate = useRouter()
   const handleOpen = () => {
-    const acao = AcaoSchema.parse(row.original)
-    setAcao(acao)
+    const carteira = CarteiraListagemSchema.parse(row.original)
+    setCarteira(carteira)
     setOpen(true)
   }
 
   const handleView = () => {
-    const acao = AcaoSchema.parse(row.original)
-    navigate.push(`/acao/${acao.codigo}`)
+    const carteira = CarteiraListagemSchema.parse(row.original)
+    navigate.push(`/carteira/${carteira.id}`)
   }
 
   return (
@@ -50,7 +53,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem onClick={handleView}>Visualizar</DropdownMenuItem>
-        <DropdownMenuItem onClick={handleOpen}>Comprar</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleOpen}>Excluir</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

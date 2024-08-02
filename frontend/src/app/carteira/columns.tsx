@@ -2,16 +2,15 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Acao } from '@/types/acao'
-import { DataTableRowActions } from '@/app/acao/data-table-row-actions'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Dispatch, SetStateAction } from 'react'
 import { moneyFormatter } from '@/lib/utils'
 import { CarteiraListagem } from '@/types/carteiraListagem'
+import { DataTableRowActions } from './data-table-row-actions'
 
 export const columns = (
   setOpen: Dispatch<SetStateAction<boolean>>,
-  setAcao: Dispatch<SetStateAction<Acao>>
+  setCarteira: Dispatch<SetStateAction<CarteiraListagem>>
 ): ColumnDef<CarteiraListagem>[] => [
   {
     accessorKey: 'nome',
@@ -48,7 +47,11 @@ export const columns = (
   {
     id: 'actions',
     cell: ({ row }) => (
-      <DataTableRowActions row={row} setOpen={setOpen} setAcao={setAcao} />
+      <DataTableRowActions
+        row={row}
+        setOpen={setOpen}
+        setCarteira={setCarteira}
+      />
     ),
   },
 ]
