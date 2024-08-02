@@ -26,9 +26,15 @@ interface Props {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   carteira: CarteiraListagem
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export function ModalExcluirCarteira({ open, setOpen, carteira }: Props) {
+export function ModalExcluirCarteira({
+  open,
+  setOpen,
+  carteira,
+  setIsLoading,
+}: Props) {
   const [checked, setChecked] = useState<boolean>(false)
 
   const { fetchUser } = useUserStore()
@@ -42,6 +48,7 @@ export function ModalExcluirCarteira({ open, setOpen, carteira }: Props) {
         toast({ title: 'Carteira excluída com sucesso!' })
         fetchUser()
         setOpen(false)
+        setIsLoading(true)
       })
       .catch(err => {
         toast({

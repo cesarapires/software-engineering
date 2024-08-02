@@ -18,7 +18,7 @@ public class StockDetailDTO {
     private String longName;
     private String symbol;
     private String logourl;
-    private List<HistoricalDataPrice> historicalDataPrice;
+    private List<HistoricalDataPriceDTO> historicalDataPrice;
     private Double close;
     private String sector;
 }

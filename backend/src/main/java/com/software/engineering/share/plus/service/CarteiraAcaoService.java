@@ -2,7 +2,9 @@ package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
 import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
+import com.software.engineering.share.plus.mapper.CarteiraMapper;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.model.Carteira;
 import com.software.engineering.share.plus.model.CarteiraAcao;
@@ -23,6 +25,7 @@ public class CarteiraAcaoService {
     private final UsuarioService usuarioService;
     private final CarteiraAcaoRepository carteiraAcaoRepository;
     private final HistoricoTransacaoRepository historicoTransacaoRepository;
+    private final CarteiraMapper carteiraMapper;
 
     @Transactional
     public CarteiraAcao buyAcao(BuyAcaoDTO dto) {
@@ -46,7 +49,7 @@ public class CarteiraAcaoService {
     }
 
     @Transactional
-    public CarteiraAcao sellAcao(SellAcaoDTO dto) {
+    public CarteiraDetailDTO sellAcao(SellAcaoDTO dto) {
         Acao acao = acaoService.findById(dto.getIdAcao());
         Carteira carteira = carteiraService.findById(dto.getIdCarteira());
         CarteiraAcao carteiraAcao = findCarteiraAcao(carteira, acao);
@@ -56,7 +59,8 @@ public class CarteiraAcaoService {
         removeQuantidade(carteiraAcao, dto.getQuantidade());
         usuarioService.addSaldo(totalTransacao);
         saveHistoricoTransacao(carteira, acao, dto.getQuantidade(), totalTransacao, false);
-        return carteiraAcao;
+
+        return carteiraMapper.convertToDetailDTO(carteira);
     }
 
     private CarteiraAcao findCarteiraAcao(Carteira carteira, Acao acao) {

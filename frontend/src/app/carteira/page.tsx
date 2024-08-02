@@ -22,7 +22,7 @@ export default function Carteira() {
       setData(res.data)
       setIsLoading(false)
     })
-  }, [])
+  }, [isLoading])
 
   return (
     <>
@@ -35,6 +35,7 @@ export default function Carteira() {
         open={open}
         setOpen={setOpen}
         carteira={selectedCarteira}
+        setIsLoading={setIsLoading}
       />
     </>
   )

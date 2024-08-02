@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CarteiraRepository extends JpaRepository<Carteira, Long> {
-    Optional<Carteira> findByNomeAndUsuarioId(String nome, Long idUsuario);
-    List<Carteira> findAllByUsuarioId(Long idUsuario);
+    Optional<Carteira> findByNomeAndUsuarioIdAndExcluidoIsFalse(String nome, Long idUsuario);
+    List<Carteira> findAllByUsuarioIdAndExcluidoIsFalse(Long idUsuario);
+    Optional<Carteira> findByIdAndUsuarioIdAndExcluidoIsFalse(Long id, Long idUsuario);
 }

@@ -8,11 +8,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseBrapi {
-    private List<StockDTO> stocks;
+public class ResultsBrapiDTO {
+    private List<StockDetailDTO> results;
 }

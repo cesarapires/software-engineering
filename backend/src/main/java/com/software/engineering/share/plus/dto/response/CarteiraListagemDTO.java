@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CarteiraListagem {
+public class CarteiraListagemDTO {
     private Long id;
     private String nome;
     private Double total;
 
-    public CarteiraListagem(Carteira carteira) {
+    public CarteiraListagemDTO(Carteira carteira) {
         this.id = carteira.getId();
         this.nome = carteira.getNome();
         this.total = carteira.getTotal();

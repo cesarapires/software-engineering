@@ -44,4 +44,8 @@ public class CarteiraAcao {
         this.acao = acao;
         this.carteira = carteira;
     }
+
+    public double getTotal() {
+        return acao.getPreco() * quantidade;
+    }
 }

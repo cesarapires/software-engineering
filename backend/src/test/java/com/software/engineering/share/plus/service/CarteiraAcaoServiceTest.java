@@ -122,7 +122,7 @@ public class CarteiraAcaoServiceTest {
                 carteiraAcaoService.buyAcao(buyDto);
             });
 
-            assertEquals("Carteira não encontrada na base de dados.", exception.getMessage());
+            assertEquals("Carteira não encontrada na base de dados desse usuário.", exception.getMessage());
             verify(usuarioService, never()).removeSaldo(anyDouble());
             verify(carteiraAcaoRepository, never()).save(any(CarteiraAcao.class));
             verify(historicoTransacaoRepository, never()).save(any(HistoricoTransacao.class));

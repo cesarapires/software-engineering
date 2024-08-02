@@ -6,7 +6,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import Api from '@/lib/api'
-import { AcaoDetail, HistoricalDataPrice } from '@/types/acaoDatail'
+import { AcaoDetail, HistoricalDataPrice } from '@/types/acaoDetail'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import {

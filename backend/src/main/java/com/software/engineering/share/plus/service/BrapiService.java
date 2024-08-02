@@ -1,8 +1,8 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.response.ResponseBrapi;
-import com.software.engineering.share.plus.dto.response.ResultsBrapi;
-import com.software.engineering.share.plus.dto.response.Stock;
+import com.software.engineering.share.plus.dto.response.ResultsBrapiDTO;
+import com.software.engineering.share.plus.dto.response.StockDTO;
 import com.software.engineering.share.plus.dto.response.StockDetailDTO;
 import com.software.engineering.share.plus.model.Acao;
 import com.software.engineering.share.plus.repository.AcaoRepository;
@@ -40,10 +40,10 @@ public class BrapiService {
             return;
         }
 
-        List<Stock> stocks = response.getStocks();
+        List<StockDTO> stocks = response.getStocks();
 
         List<Acao> acoes = new ArrayList<>(stocks.size());
-        for (Stock stock : stocks) {
+        for (StockDTO stock : stocks) {
             Acao acao = acaoRepository.findByCodigo(stock.getStock());
             if (acao == null) {
                 acao = new Acao();
@@ -62,7 +62,7 @@ public class BrapiService {
 
     public StockDetailDTO getStockDetails(String stockSymbol) {
         String url = String.format("%s/quote/%s?token=%s&range=1mo&interval=1d", brapiUrl, stockSymbol, token);
-        ResultsBrapi response = restTemplate.getForObject(url, ResultsBrapi.class);
+        ResultsBrapiDTO response = restTemplate.getForObject(url, ResultsBrapiDTO.class);
         Acao acao = acaoRepository.findByCodigo(stockSymbol);
         StockDetailDTO stockDetailDTO = response.getResults().get(0);
         if (acao != null) {

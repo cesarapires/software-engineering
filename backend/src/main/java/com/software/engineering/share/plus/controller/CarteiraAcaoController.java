@@ -2,6 +2,7 @@ package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
 import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.model.CarteiraAcao;
 import com.software.engineering.share.plus.service.CarteiraAcaoService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,7 @@ public class CarteiraAcaoController {
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<CarteiraAcao> buyAcao(@RequestBody SellAcaoDTO dto) {
-
+    public ResponseEntity<CarteiraDetailDTO> sellAcao(@RequestBody SellAcaoDTO dto) {
         return ResponseEntity.ok(carteiraAcaoService.sellAcao(dto));
     }
 }

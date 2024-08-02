@@ -2,7 +2,7 @@ package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.request.LoginDTO;
 import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
-import com.software.engineering.share.plus.dto.response.LoginResponse;
+import com.software.engineering.share.plus.dto.response.LoginResponseDTO;
 import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.service.AuthenticationService;
 import com.software.engineering.share.plus.service.JwtService;
@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,22 +33,22 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDTO loginUserDto) {
+    public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody LoginDTO loginUserDto) {
         Usuario authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+        LoginResponseDTO loginResponse = new LoginResponseDTO(jwtToken, jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
     }
 
     @GetMapping("/is-logged-in")
-    public ResponseEntity<LoginResponse> isLoggedIn(HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDTO> isLoggedIn(HttpServletRequest request) {
         if (jwtService.isTokenValid(request.getHeader("Authorization"))) {
             Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String jwtToken = jwtService.generateToken(usuario);
-            LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+            LoginResponseDTO loginResponse = new LoginResponseDTO(jwtToken, jwtService.getExpirationTime());
 
             return ResponseEntity.ok(loginResponse);
         }

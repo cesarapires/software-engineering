@@ -1,15 +1,21 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
-import com.software.engineering.share.plus.dto.response.CarteiraListagem;
+import com.software.engineering.share.plus.dto.response.CarteiraDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
+import com.software.engineering.share.plus.dto.response.CarteiraListagemDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.exception.EntityAlreadyExistsException;
 import com.software.engineering.share.plus.mapper.CarteiraMapper;
 import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.model.Usuario;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
 import com.software.engineering.share.plus.repository.CarteiraRepository;
+import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,24 +28,32 @@ public class CarteiraService {
     private final CarteiraRepository carteiraRepository;
     private final CarteiraAcaoRepository carteiraAcaoRepository;
     private final CarteiraMapper carteiraMapper;
+    private final HistoricoTransacaoRepository historicoTransacaoRepository;
 
-    public Carteira salvar(CarteiraToSaveDTO carteira) {
-        Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioId(carteira.getNome(), carteira.getIdUsuario());
+    public CarteiraDTO salvar(CarteiraToSaveDTO carteira) {
+        Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioIdAndExcluidoIsFalse(carteira.getNome(), carteira.getIdUsuario());
         if (optional.isPresent()) {
             throw new EntityAlreadyExistsException("Carteira já existe para esse usuário");
         }
 
-        return carteiraRepository.save(carteiraMapper.toEntity(carteira));
+
+        Carteira saved = carteiraRepository.save(carteiraMapper.toEntity(carteira));
+        return carteiraMapper.convert(saved);
     }
 
-    public List<CarteiraListagem> findAllByUsuarioId(Long idUsuario) {
-        List<Carteira> all = carteiraRepository.findAllByUsuarioId(idUsuario);
+    public List<CarteiraListagemDTO> findAllByUsuario() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario currentUser = (Usuario) authentication.getPrincipal();
 
-        return all.stream().map(CarteiraListagem::new).toList();
+        List<Carteira> all = carteiraRepository.findAllByUsuarioIdAndExcluidoIsFalse(currentUser.getId());
+
+        return all.stream().map(CarteiraListagemDTO::new).toList();
     }
 
     public Carteira findById(Long id) {
-        return carteiraRepository.findById(id).orElseThrow(() -> new BadRequestException("Carteira não encontrada na base de dados."));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario currentUser = (Usuario) authentication.getPrincipal();
+        return carteiraRepository.findByIdAndUsuarioIdAndExcluidoIsFalse(id, currentUser.getId()).orElseThrow(() -> new BadRequestException("Carteira não encontrada na base de dados desse usuário."));
     }
 
     @Transactional
@@ -52,6 +66,18 @@ public class CarteiraService {
             throw new BadRequestException("Não é possível excluir a carteira pois ela contém ações");
         }
 
-        carteiraRepository.delete(carteira);
+        boolean hasTransacoes = historicoTransacaoRepository.existsByCarteira(carteira);
+        if (hasTransacoes) {
+            carteira.setExcluido(true);
+            carteiraRepository.save(carteira);
+        } else {
+            carteiraRepository.delete(carteira);
+        }
     }
+
+    public CarteiraDetailDTO findCarteiraDetails(Long idCarteira) {
+        Carteira carteira = findById(idCarteira);
+        return carteiraMapper.convertToDetailDTO(carteira);
+    }
+
 }

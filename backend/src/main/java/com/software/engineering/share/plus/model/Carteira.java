@@ -44,6 +44,9 @@ public class Carteira {
     @JsonIgnoreProperties(value = {"carteira"})
     private Set<CarteiraAcao> carteiraAcoes;
 
+    @Column
+    private Boolean excluido = false;
+
     public double getTotal() {
         return carteiraAcoes.stream()
                 .filter(Objects::nonNull)

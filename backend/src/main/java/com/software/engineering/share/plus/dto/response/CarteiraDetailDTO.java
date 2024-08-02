@@ -1,18 +1,20 @@
 package com.software.engineering.share.plus.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseBrapi {
-    private List<StockDTO> stocks;
+@Getter
+@Setter
+public class CarteiraDetailDTO {
+    private Long id;
+    private String nome;
+    private Double total;
+    private List<CarteiraAcaoDTO> carteiraAcoes;
 }
