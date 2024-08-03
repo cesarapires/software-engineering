@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Api from '@/lib/api'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserStore } from '@/stores/user-store'
 import { Input } from '../ui/input'
 import { useToast } from '../ui/use-toast'
@@ -38,18 +38,25 @@ const changeUserSchema = z
 
 export function EditUserModal() {
   const [open, setOpen] = useState<boolean>(false)
-  const { fetchUser } = useUserStore()
+  const { fetchUser, nome, email } = useUserStore()
 
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof changeUserSchema>>({
     resolver: zodResolver(changeUserSchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: nome,
+      email: email,
     },
     mode: 'onChange',
   })
+
+  useEffect(() => {
+    form.reset({
+      name: nome,
+      email: email,
+    })
+  }, [nome, email, form])
 
   const handleUpdateUser = () => {
     Api.post('/v1/usuario/update-user', {
