@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final Logger log = GlobalLogger.getInstance().logger();
 
     @Override
     protected void doFilterInternal(
@@ -59,11 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    log.info("Token inválido para usuário: {}", userEmail);
                 }
             }
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
+            log.info("Token inválido : {}", authHeader);
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }

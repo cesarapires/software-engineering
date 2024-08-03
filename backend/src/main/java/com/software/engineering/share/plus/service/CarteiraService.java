@@ -1,5 +1,6 @@
 package com.software.engineering.share.plus.service;
 
+import com.software.engineering.share.plus.configuration.GlobalLogger;
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
@@ -14,6 +15,7 @@ import com.software.engineering.share.plus.repository.CarteiraRepository;
 import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,12 @@ public class CarteiraService {
     private final CarteiraAcaoRepository carteiraAcaoRepository;
     private final CarteiraMapper carteiraMapper;
     private final HistoricoTransacaoRepository historicoTransacaoRepository;
+    private final Logger log = GlobalLogger.getInstance().logger();
 
     public CarteiraDTO salvar(CarteiraToSaveDTO carteira) {
         Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioIdAndExcluidoIsFalse(carteira.getNome(), carteira.getIdUsuario());
         if (optional.isPresent()) {
+            log.info("Carteira já existe para esse usuário");
             throw new EntityAlreadyExistsException("Carteira já existe para esse usuário");
         }
 
@@ -63,6 +67,8 @@ public class CarteiraService {
         boolean hasAcoes = carteiraAcaoRepository.existsByCarteira(carteira);
 
         if (hasAcoes) {
+            log.info("Não é possível excluir a carteira pois ela contém ações");
+
             throw new BadRequestException("Não é possível excluir a carteira pois ela contém ações");
         }
 

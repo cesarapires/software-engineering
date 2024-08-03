@@ -1,5 +1,6 @@
 package com.software.engineering.share.plus.service;
 
+import com.software.engineering.share.plus.configuration.GlobalLogger;
 import com.software.engineering.share.plus.dto.request.LoginDTO;
 import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
@@ -8,6 +9,9 @@ import com.software.engineering.share.plus.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +26,8 @@ public class AuthenticationService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    private final Logger log = GlobalLogger.getInstance().logger();
 
     public Usuario signup(RegisterUserDTO input) {
         if (usuarioRepository.existsByEmail(input.getEmail())) {
@@ -38,6 +44,8 @@ public class AuthenticationService {
         usuario.setSenha(passwordEncoder.encode(input.getPassword()));
         usuario = usuarioRepository.save(usuario);
 
+        log.info("Usuário cadastrado: {}", usuario.getEmail());
+
         return usuarioRepository.save(usuario);
     }
 
@@ -45,6 +53,8 @@ public class AuthenticationService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword())
         );
+
+        log.info("Usuário logado: {}", authenticate.getName());
 
         return (Usuario) authenticate.getPrincipal();
     }

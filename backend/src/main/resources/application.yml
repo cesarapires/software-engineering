@@ -27,11 +27,14 @@ spring:
 security:
   jwt:
     secret-key: 5bd40f8b9e9e197cccb9e62316128f7e3b94a0bd1e1e4ac2e295ee0dda3da2c6
-    expiration-time: 3600000
+    expiration-time: 36000000
 
 logging:
   level:
-      sql: trace
+    root: info
+  file:
+    name: share-plus.log
+    path: /var/log/share-plus
 
 brapi:
   url: https://brapi.dev/api
