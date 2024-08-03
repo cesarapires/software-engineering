@@ -13,7 +13,8 @@ export default function Carteira() {
   const [data, setData] = useState<CarteiraListagem[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isExcluirModalOpen, setIsExcluirModalOpen] = useState<boolean>(false)
-  const [isCreateNewWalletModalOpen, setIsCreateNewWalletModalOpen] = useState<boolean>(false)
+  const [isCreateNewWalletModalOpen, setIsCreateNewWalletModalOpen] =
+    useState<boolean>(false)
   const [selectedCarteira, setSelectedCarteira] = useState<CarteiraListagem>({
     id: 0,
     total: 0,
@@ -58,10 +59,10 @@ export default function Carteira() {
   )
 }
 
-function buildCreateNewWalletButton(setModalState: Dispatch<SetStateAction<boolean>>): ReactNode {
+function buildCreateNewWalletButton(
+  setModalState: Dispatch<SetStateAction<boolean>>
+): ReactNode {
   return (
-    <Button onClick={() => setModalState(true)}>
-      Criar nova carteira
-    </Button>
+    <Button onClick={() => setModalState(true)}>Criar nova carteira</Button>
   )
 }

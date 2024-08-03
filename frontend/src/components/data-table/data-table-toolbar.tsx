@@ -3,7 +3,7 @@
 import { Table } from '@tanstack/react-table'
 import { Input } from '@/components/ui/input'
 
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -28,9 +28,7 @@ export function DataTableToolbar<TData>({
           className="h-8 w-[150px] lg:w-[250px]"
         />
       </div>
-      <div>
-        {optionButton}
-      </div>
+      <div>{optionButton}</div>
     </div>
   )
 }

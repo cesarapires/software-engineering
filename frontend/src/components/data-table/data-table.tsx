@@ -29,7 +29,7 @@ import { DataTablePagination } from './data-table-pagination'
 import { DataTableToolbar } from './data-table-toolbar'
 import { Skeleton } from '../ui/skeleton'
 
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} optionButton={optionButton}/>
+      <DataTableToolbar table={table} optionButton={optionButton} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

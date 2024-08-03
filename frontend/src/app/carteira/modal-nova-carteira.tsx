@@ -10,7 +10,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useForm } from 'react-hook-form'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Api from '@/lib/api'
@@ -26,14 +33,13 @@ interface Props {
 }
 
 const schema = z.object({
-  description: z.string().min(5, 'A descrição deve ter no mínimo 5 caracteres').max(50),
+  description: z
+    .string()
+    .min(5, 'A descrição deve ter no mínimo 5 caracteres')
+    .max(50),
 })
 
-export function CreateNewWalletModal({
-  open,
-  setOpen,
-  reloadData,
-}: Props) {
+export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
   const { fetchUser } = useUserStore()
 
   const { toast } = useToast()
@@ -49,12 +55,14 @@ export function CreateNewWalletModal({
   const handleCreateWallet = () => {
     Api.post('/v1/carteira/save', {
       nome: form.getValues().description,
-    }).then(() => {
+    })
+      .then(() => {
         fetchUser()
         form.reset()
         reloadData()
         setOpen(false)
-      }).catch(() => {
+      })
+      .catch(() => {
         toast({
           title: 'Erro ao criar carteira',
           description: 'Tente novamente mais tarde',
@@ -81,18 +89,21 @@ export function CreateNewWalletModal({
             onSubmit={form.handleSubmit(handleCreateWallet)}
           >
             <div className="grid gap-2">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="flex flex-col space-y-1.5">
-                  <FormControl>
-                    <Input {...field} placeholder="Digite a descrição da carteira" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Digite a descrição da carteira"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <DialogFooter>
               <Button
