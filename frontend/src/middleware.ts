@@ -33,7 +33,7 @@ const isAuthenticated = async (token: string | undefined) => {
     return true
   } catch (err) {
     console.log(err)
-    return false
+    return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_FRONT_URL))
   }
 }
 
