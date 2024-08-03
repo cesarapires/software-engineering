@@ -30,6 +30,9 @@ public class CarteiraController {
 
     @PostMapping("/save")
     public ResponseEntity<CarteiraDTO> save(@RequestBody CarteiraToSaveDTO carteira) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario currentUser = (Usuario) authentication.getPrincipal();
+        carteira.setIdUsuario(currentUser.getId());
         return ResponseEntity.ok(carteiraService.salvar(carteira));
     }
 
