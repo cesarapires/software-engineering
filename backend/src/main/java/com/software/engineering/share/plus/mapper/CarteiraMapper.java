@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.mapper;
 
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.request.CarteiraToUpdateDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.model.Carteira;

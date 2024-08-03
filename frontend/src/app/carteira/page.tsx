@@ -8,6 +8,7 @@ import { ModalExcluirCarteira } from './modal-excluir-carteira'
 import { CarteiraListagem } from '@/types/carteiraListagem'
 import { Button } from '@/components/ui/button'
 import { CreateNewWalletModal } from './modal-nova-carteira'
+import { EditWalletModal } from './modal-editar-carteira'
 
 export default function Carteira() {
   const [data, setData] = useState<CarteiraListagem[]>([])
@@ -20,6 +21,7 @@ export default function Carteira() {
     total: 0,
     nome: '',
   })
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     Api.get<CarteiraListagem[]>('/v1/carteira/all').then(res => {
@@ -40,7 +42,11 @@ export default function Carteira() {
     <>
       <DataTable
         data={data}
-        columns={columns(setIsExcluirModalOpen, setSelectedCarteira)}
+        columns={columns(
+          setIsExcluirModalOpen,
+          setSelectedCarteira,
+          setIsEditModalOpen
+        )}
         isLoading={isLoading}
         optionButton={buildCreateNewWalletButton(setIsCreateNewWalletModalOpen)}
       />
@@ -54,6 +60,12 @@ export default function Carteira() {
         open={isCreateNewWalletModalOpen}
         setOpen={setIsCreateNewWalletModalOpen}
         reloadData={reloadData}
+      />
+      <EditWalletModal
+        open={isEditModalOpen}
+        setOpen={setIsEditModalOpen}
+        reloadData={reloadData}
+        idCarteira={selectedCarteira.id}
       />
     </>
   )

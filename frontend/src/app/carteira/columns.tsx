@@ -10,7 +10,8 @@ import { DataTableRowActions } from './data-table-row-actions'
 
 export const columns = (
   setOpen: Dispatch<SetStateAction<boolean>>,
-  setCarteira: Dispatch<SetStateAction<CarteiraListagem>>
+  setCarteira: Dispatch<SetStateAction<CarteiraListagem>>,
+  setOpenEdit: Dispatch<SetStateAction<boolean>>
 ): ColumnDef<CarteiraListagem>[] => [
   {
     accessorKey: 'nome',
@@ -48,6 +49,7 @@ export const columns = (
         row={row}
         setOpen={setOpen}
         setCarteira={setCarteira}
+        setOpenEdit={setOpenEdit}
       />
     ),
   },

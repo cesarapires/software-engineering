@@ -21,18 +21,26 @@ interface DataTableRowActionsProps<TData> {
   row: Row<TData>
   setOpen: Dispatch<SetStateAction<boolean>>
   setCarteira: Dispatch<SetStateAction<CarteiraListagem>>
+  setOpenEdit: Dispatch<SetStateAction<boolean>>
 }
 
 export function DataTableRowActions<TData>({
   row,
   setOpen,
   setCarteira,
+  setOpenEdit,
 }: DataTableRowActionsProps<TData>) {
   const navigate = useRouter()
   const handleOpen = () => {
     const carteira = CarteiraListagemSchema.parse(row.original)
     setCarteira(carteira)
     setOpen(true)
+  }
+
+  const handleOpenEdit = () => {
+    const carteira = CarteiraListagemSchema.parse(row.original)
+    setCarteira(carteira)
+    setOpenEdit(true)
   }
 
   const handleView = () => {
@@ -54,6 +62,7 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem onClick={handleView}>Visualizar</DropdownMenuItem>
         <DropdownMenuItem onClick={handleOpen}>Excluir</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleOpenEdit}>Editar</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

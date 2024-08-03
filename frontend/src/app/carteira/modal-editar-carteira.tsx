@@ -30,6 +30,7 @@ interface Props {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   reloadData: () => void
+  idCarteira: number
 }
 
 const schema = z.object({
@@ -39,7 +40,12 @@ const schema = z.object({
     .max(50),
 })
 
-export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
+export function EditWalletModal({
+  open,
+  setOpen,
+  reloadData,
+  idCarteira,
+}: Props) {
   const { fetchUser } = useUserStore()
 
   const { toast } = useToast()
@@ -52,9 +58,10 @@ export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
     mode: 'onChange',
   })
 
-  const handleCreateWallet = () => {
-    Api.post('/v1/carteira/save', {
+  const handleEditWallet = () => {
+    Api.put('/v1/carteira/update', {
       nome: form.getValues().description,
+      idCarteira: idCarteira,
     })
       .then(() => {
         fetchUser()
@@ -64,7 +71,7 @@ export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
       })
       .catch(err => {
         toast({
-          title: 'Erro ao criar carteira',
+          title: 'Erro ao editar carteira',
           description: err.response?.data?.details,
         })
       })
@@ -77,16 +84,16 @@ export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
         onCloseAutoFocus={() => form.reset()}
       >
         <DialogHeader>
-          <DialogTitle>Criar nova carteira</DialogTitle>
+          <DialogTitle>Editar carteira</DialogTitle>
           <DialogDescription>
-            Crie uma nova carteira para começar a investir
+            Insira um novo nome de sua escolha
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
-            id="form-create-new-wallet"
+            id="form-edit-new-wallet"
             className="grid gap-4 py-4"
-            onSubmit={form.handleSubmit(handleCreateWallet)}
+            onSubmit={form.handleSubmit(handleEditWallet)}
           >
             <div className="grid gap-2">
               <FormField
@@ -109,9 +116,9 @@ export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
               <Button
                 type="submit"
                 disabled={!form.formState.isValid}
-                form="form-create-new-wallet"
+                form="form-edit-new-wallet"
               >
-                Criar
+                Editar
               </Button>
             </DialogFooter>
           </form>

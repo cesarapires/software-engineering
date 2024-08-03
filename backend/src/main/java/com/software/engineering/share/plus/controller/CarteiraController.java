@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.request.CarteiraToUpdateDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraListagemDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,5 +51,13 @@ public class CarteiraController {
     @GetMapping("{id}")
     public ResponseEntity<CarteiraDetailDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(carteiraService.findCarteiraDetails(id));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<CarteiraDTO> update(@RequestBody CarteiraToUpdateDTO carteira) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario currentUser = (Usuario) authentication.getPrincipal();
+        carteira.setIdUsuario(currentUser.getId());
+        return ResponseEntity.ok(carteiraService.update(carteira));
     }
 }

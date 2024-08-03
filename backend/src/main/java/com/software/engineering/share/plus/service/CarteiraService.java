@@ -2,6 +2,7 @@ package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.configuration.GlobalLogger;
 import com.software.engineering.share.plus.dto.request.CarteiraToSaveDTO;
+import com.software.engineering.share.plus.dto.request.CarteiraToUpdateDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraListagemDTO;
@@ -34,12 +35,7 @@ public class CarteiraService {
     private final Logger log = GlobalLogger.getInstance().logger();
 
     public CarteiraDTO salvar(CarteiraToSaveDTO carteira) {
-        Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioIdAndExcluidoIsFalse(carteira.getNome(), carteira.getIdUsuario());
-        if (optional.isPresent()) {
-            log.info("Carteira já existe para esse usuário");
-            throw new EntityAlreadyExistsException("Carteira já existe para esse usuário");
-        }
-
+        checkIfExists(carteira.getNome(), carteira.getIdUsuario());
 
         Carteira saved = carteiraRepository.save(carteiraMapper.toEntity(carteira));
         return carteiraMapper.convert(saved);
@@ -84,6 +80,30 @@ public class CarteiraService {
     public CarteiraDetailDTO findCarteiraDetails(Long idCarteira) {
         Carteira carteira = findById(idCarteira);
         return carteiraMapper.convertToDetailDTO(carteira);
+    }
+
+    public CarteiraDTO update(CarteiraToUpdateDTO carteira) {
+        Optional<Carteira> optional = carteiraRepository.findByIdAndUsuarioIdAndExcluidoIsFalse(carteira.getIdCarteira(), carteira.getIdUsuario());
+        if (optional.isEmpty()) {
+            log.info("Carteira não encontrada");
+            throw new BadRequestException("Carteira não encontrada");
+        }
+
+        Carteira carteiraDb = optional.get();
+
+        checkIfExists(carteira.getNome(), carteira.getIdUsuario());
+        carteiraDb.setNome(carteira.getNome());
+
+        Carteira updated = carteiraRepository.save(carteiraDb);
+        return carteiraMapper.convert(updated);
+    }
+
+    private void checkIfExists(String nome, Long idUsuario) {
+        Optional<Carteira> optional = carteiraRepository.findByNomeAndUsuarioIdAndExcluidoIsFalse(nome, idUsuario);
+        if (optional.isPresent()) {
+            log.info("Carteira já existe para esse usuário");
+            throw new EntityAlreadyExistsException("Carteira já existe para esse usuário");
+        }
     }
 
 }
