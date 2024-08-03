@@ -57,7 +57,7 @@ const Sidebar = () => {
           />
           <NavLink
             id="nav_home"
-            text="Home"
+            text="Histórico"
             icon={<Home size={16} />}
             href="/"
           />

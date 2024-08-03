@@ -108,7 +108,7 @@ export function ModalComprarAcao({ open, setOpen, acao }: Props) {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Selecione a carteira" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
