@@ -6,7 +6,6 @@ import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.model.Carteira;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.core.convert.converter.Converter;
 
 @Mapper(componentModel = "spring", uses = UsuarioMapper.class)
 public interface CarteiraMapper {
