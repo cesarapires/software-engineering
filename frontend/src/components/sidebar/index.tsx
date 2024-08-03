@@ -9,6 +9,9 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/stores/user-store'
 import { ModalDepositar } from './modal-depositar'
+import AnonymousUserImage from './anonymous-user'
+import { EditPasswordModal } from './edit-password-modal'
+import { EditUserModal } from './edit-user-modal'
 
 const Sidebar = () => {
   const { nome, saldo, fetchUser } = useUserStore()
@@ -28,6 +31,12 @@ const Sidebar = () => {
           loading="eager"
           height={100}
         />
+        <div className="text-center">
+            <EditUserModal />
+          <div className='py-5'>
+            <EditPasswordModal />
+          </div>
+        </div>
         <div className="text-center">
           <h1 className="text-lg font-semibold">{nome}</h1>
           <h2 className="self-center text-lg font-semibold">
