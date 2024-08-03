@@ -1,5 +1,6 @@
 package com.software.engineering.share.plus.controller;
 
+import com.software.engineering.share.plus.dto.request.ChangePasswordDTO;
 import com.software.engineering.share.plus.dto.request.LoginDTO;
 import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
 import com.software.engineering.share.plus.dto.response.LoginResponseDTO;
@@ -8,6 +9,7 @@ import com.software.engineering.share.plus.service.AuthenticationService;
 import com.software.engineering.share.plus.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +32,13 @@ public class AuthController {
         Usuario registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        authenticationService.changePassword(changePasswordDTO);
+
+        return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/login")
