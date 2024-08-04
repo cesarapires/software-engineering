@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname
+  const token = request.cookies.get('token')?.value
+  if (!token && currentPath !== '/login') {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
   const isAuth = await isAuthenticated(request.cookies.get('token')?.value)
 
   if (currentPath === '/' && !isAuth) {
