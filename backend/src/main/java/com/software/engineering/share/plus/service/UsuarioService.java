@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.configuration.GlobalLogger;
+import com.software.engineering.share.plus.dto.request.UpdateUserDTO;
 import com.software.engineering.share.plus.dto.response.UsuarioDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.mapper.UsuarioMapper;
@@ -63,5 +64,30 @@ public class UsuarioService {
         Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         removeSaldo(usuario, valor);
+    }
+
+    @Transactional
+    public void updateUser(UpdateUserDTO updateUserDTO) {
+        boolean emailIsEquals = updateUserDTO.getEmail().equals(updateUserDTO.getEmail());
+        boolean emailExists = usuarioRepository.existsByEmail(updateUserDTO.getEmail());
+
+        if (!emailIsEquals && emailExists) {
+            throw new BadRequestException("Email já está em uso por outro usuário");
+        }
+
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (updateUserDTO.getEmail().isEmpty()) {
+            throw new BadRequestException("Email não pode ser vázio");
+        }
+
+        if (updateUserDTO.getName().isEmpty()) {
+            throw new BadRequestException("Nome não pode ser vázio");
+        }
+
+        usuario.setEmail(updateUserDTO.getEmail());
+        usuario.setNome(updateUserDTO.getName());
+
+        usuarioRepository.save(usuario);
     }
 }

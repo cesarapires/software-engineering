@@ -1,6 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.configuration.GlobalLogger;
+import com.software.engineering.share.plus.dto.request.ChangePasswordDTO;
 import com.software.engineering.share.plus.dto.request.LoginDTO;
 import com.software.engineering.share.plus.dto.request.RegisterUserDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,22 @@ public class AuthenticationService {
         log.info("Usuário cadastrado: {}", usuario.getEmail());
 
         return usuarioRepository.save(usuario);
+    }
+
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        String oldPassword = passwordEncoder.encode(changePasswordDTO.getOldPassword());
+        String newPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        boolean oldPasswordIsValid = oldPassword.equals(usuario.getPassword());
+        if (oldPasswordIsValid) {
+            throw new BadRequestException("Senha incorreta");
+        }
+
+        usuario.setSenha(newPassword);
+
+        usuarioRepository.save(usuario);
     }
 
     public Usuario authenticate(LoginDTO input) {
