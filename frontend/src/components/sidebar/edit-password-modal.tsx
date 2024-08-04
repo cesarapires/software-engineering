@@ -65,19 +65,21 @@ export function EditPasswordModal() {
     Api.post('/v1/auth/change-password', {
       oldPassword: form.getValues().oldPassword,
       newPassword: form.getValues().newPassword,
-    }).then(() => {
-      fetchUser()
-      toast({
-        title: 'Senha alterada com sucesso',
-      })
-      form.reset()
-      setOpen(false)
-    }).catch(() => {
-      toast({
-        title: 'Erro ao alterar senha',
-        description: 'Tente novamente mais tarde',
-      })
     })
+      .then(() => {
+        fetchUser()
+        toast({
+          title: 'Senha alterada com sucesso',
+        })
+        form.reset()
+        setOpen(false)
+      })
+      .catch(() => {
+        toast({
+          title: 'Erro ao alterar senha',
+          description: 'Tente novamente mais tarde',
+        })
+      })
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -90,9 +92,7 @@ export function EditPasswordModal() {
       >
         <DialogHeader>
           <DialogTitle>Alterar as senhas</DialogTitle>
-          <DialogDescription>
-            Altere a senha da sua conta
-          </DialogDescription>
+          <DialogDescription>Altere a senha da sua conta</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form

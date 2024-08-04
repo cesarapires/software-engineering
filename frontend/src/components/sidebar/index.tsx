@@ -32,8 +32,8 @@ const Sidebar = () => {
           height={100}
         />
         <div className="text-center">
-            <EditUserModal />
-          <div className='py-5'>
+          <EditUserModal />
+          <div className="py-5">
             <EditPasswordModal />
           </div>
         </div>

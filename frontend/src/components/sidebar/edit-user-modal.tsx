@@ -30,11 +30,10 @@ import AnonymousUserImage from './anonymous-user'
 
 const REQUIRED = 'Campo obrigatório'
 
-const changeUserSchema = z
-  .object({
-    name: z.string({ required_error: REQUIRED }).min(1, REQUIRED),
-    email: z.string({ required_error: REQUIRED }).email(),
-  })
+const changeUserSchema = z.object({
+  name: z.string({ required_error: REQUIRED }).min(1, REQUIRED),
+  email: z.string({ required_error: REQUIRED }).email(),
+})
 
 export function EditUserModal() {
   const [open, setOpen] = useState<boolean>(false)
@@ -62,19 +61,21 @@ export function EditUserModal() {
     Api.post('/v1/usuario/update-user', {
       name: form.getValues().name,
       email: form.getValues().email,
-    }).then(() => {
-      fetchUser()
-      toast({
-        title: 'Usuário atualizado com sucesso',
-      })
-      form.reset()
-      setOpen(false)
-    }).catch(() => {
-      toast({
-        title: 'Erro ao atualizar usuário',
-        description: 'Tente novamente mais tarde',
-      })
     })
+      .then(() => {
+        fetchUser()
+        toast({
+          title: 'Usuário atualizado com sucesso',
+        })
+        form.reset()
+        setOpen(false)
+      })
+      .catch(() => {
+        toast({
+          title: 'Erro ao atualizar usuário',
+          description: 'Tente novamente mais tarde',
+        })
+      })
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -87,9 +88,7 @@ export function EditUserModal() {
       >
         <DialogHeader>
           <DialogTitle>Alterar dados do usuário</DialogTitle>
-          <DialogDescription>
-            Altere os dados da sua conta
-          </DialogDescription>
+          <DialogDescription>Altere os dados da sua conta</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -105,10 +104,7 @@ export function EditUserModal() {
                   <FormItem className="flex flex-col space-y-1.5">
                     <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                      />
+                      <Input {...field} type="text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -121,10 +117,7 @@ export function EditUserModal() {
                   <FormItem className="flex flex-col space-y-1.5">
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                      />
+                      <Input {...field} type="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

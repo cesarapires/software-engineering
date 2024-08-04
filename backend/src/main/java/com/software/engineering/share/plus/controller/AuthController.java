@@ -9,7 +9,6 @@ import com.software.engineering.share.plus.service.AuthenticationService;
 import com.software.engineering.share.plus.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
