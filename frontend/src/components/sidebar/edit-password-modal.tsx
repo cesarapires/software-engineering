@@ -74,10 +74,10 @@ export function EditPasswordModal() {
         form.reset()
         setOpen(false)
       })
-      .catch(() => {
+      .catch(err => {
         toast({
           title: 'Erro ao alterar senha',
-          description: 'Tente novamente mais tarde',
+          description: err.response?.data?.details,
         })
       })
   }

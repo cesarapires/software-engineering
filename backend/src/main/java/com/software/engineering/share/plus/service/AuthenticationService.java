@@ -50,15 +50,13 @@ public class AuthenticationService {
     }
 
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
-        String oldPassword = passwordEncoder.encode(changePasswordDTO.getOldPassword());
         String newPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
 
         Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        boolean oldPasswordIsValid = oldPassword.equals(usuario.getPassword());
-        if (oldPasswordIsValid) {
-            throw new BadRequestException("Senha incorreta");
-        }
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(usuario.getEmail(), changePasswordDTO.getOldPassword())
+        );
 
         usuario.setSenha(newPassword);
 
