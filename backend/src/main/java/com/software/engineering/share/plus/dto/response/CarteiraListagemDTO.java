@@ -1,6 +1,6 @@
 package com.software.engineering.share.plus.dto.response;
 
-import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.entity.Carteira;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

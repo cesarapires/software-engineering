@@ -1,8 +1,8 @@
 package com.software.engineering.share.plus.repository;
 
 import com.software.engineering.share.plus.dto.response.RelatorioTransacoesDTO;
-import com.software.engineering.share.plus.model.Carteira;
-import com.software.engineering.share.plus.model.HistoricoTransacao;
+import com.software.engineering.share.plus.entity.Carteira;
+import com.software.engineering.share.plus.entity.HistoricoTransacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

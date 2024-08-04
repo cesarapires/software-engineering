@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.mapper;
 
 import com.software.engineering.share.plus.dto.response.UsuarioDTO;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {HistoricoTransacaoMapper.class})

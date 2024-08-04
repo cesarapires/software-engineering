@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.response.RelatorioTransacoesDTO;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

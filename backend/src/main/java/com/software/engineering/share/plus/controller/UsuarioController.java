@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.controller;
 
 import com.software.engineering.share.plus.dto.response.UsuarioDTO;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import com.software.engineering.share.plus.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

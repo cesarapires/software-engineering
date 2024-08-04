@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.exception.BadRequestException;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

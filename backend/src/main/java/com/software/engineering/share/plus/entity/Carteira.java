@@ -1,4 +1,4 @@
-package com.software.engineering.share.plus.model;
+package com.software.engineering.share.plus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

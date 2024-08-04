@@ -2,7 +2,7 @@ package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.response.AcaoListagemDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
-import com.software.engineering.share.plus.model.Acao;
+import com.software.engineering.share.plus.entity.Acao;
 import com.software.engineering.share.plus.repository.AcaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -5,7 +5,7 @@ import com.software.engineering.share.plus.dto.request.CarteiraToUpdateDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraListagemDTO;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import com.software.engineering.share.plus.service.CarteiraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.software.engineering.share.plus.model;
+package com.software.engineering.share.plus.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

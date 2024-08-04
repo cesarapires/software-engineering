@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.exception.BadRequestException;
-import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.entity.Carteira;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
 import com.software.engineering.share.plus.repository.CarteiraRepository;
 import com.software.engineering.share.plus.util.MockEntityFactory;

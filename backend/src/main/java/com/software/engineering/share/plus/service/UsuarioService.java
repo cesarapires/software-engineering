@@ -4,7 +4,7 @@ import com.software.engineering.share.plus.configuration.GlobalLogger;
 import com.software.engineering.share.plus.dto.response.UsuarioDTO;
 import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.mapper.UsuarioMapper;
-import com.software.engineering.share.plus.model.Usuario;
+import com.software.engineering.share.plus.entity.Usuario;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.software.engineering.share.plus.mapper;
 
 import com.software.engineering.share.plus.dto.response.AcaoDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDTO;
-import com.software.engineering.share.plus.model.Acao;
-import com.software.engineering.share.plus.model.Carteira;
+import com.software.engineering.share.plus.entity.Acao;
+import com.software.engineering.share.plus.entity.Carteira;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 

@@ -3,7 +3,7 @@ package com.software.engineering.share.plus.controller;
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
 import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
 import com.software.engineering.share.plus.dto.response.CarteiraDetailDTO;
-import com.software.engineering.share.plus.model.CarteiraAcao;
+import com.software.engineering.share.plus.entity.CarteiraAcao;
 import com.software.engineering.share.plus.service.CarteiraAcaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

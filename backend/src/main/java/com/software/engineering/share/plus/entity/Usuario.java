@@ -1,4 +1,4 @@
-package com.software.engineering.share.plus.model;
+package com.software.engineering.share.plus.entity;
 
 import com.software.engineering.share.plus.exception.BadRequestException;
 import jakarta.persistence.Column;

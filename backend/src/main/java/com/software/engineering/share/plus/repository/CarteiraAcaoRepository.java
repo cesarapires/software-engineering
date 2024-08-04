@@ -1,8 +1,8 @@
 package com.software.engineering.share.plus.repository;
 
-import com.software.engineering.share.plus.model.Acao;
-import com.software.engineering.share.plus.model.Carteira;
-import com.software.engineering.share.plus.model.CarteiraAcao;
+import com.software.engineering.share.plus.entity.Acao;
+import com.software.engineering.share.plus.entity.Carteira;
+import com.software.engineering.share.plus.entity.CarteiraAcao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

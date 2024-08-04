@@ -4,7 +4,7 @@ import com.software.engineering.share.plus.dto.response.ResponseBrapi;
 import com.software.engineering.share.plus.dto.response.ResultsBrapiDTO;
 import com.software.engineering.share.plus.dto.response.StockDTO;
 import com.software.engineering.share.plus.dto.response.StockDetailDTO;
-import com.software.engineering.share.plus.model.Acao;
+import com.software.engineering.share.plus.entity.Acao;
 import com.software.engineering.share.plus.repository.AcaoRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
