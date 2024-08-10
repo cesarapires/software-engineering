@@ -96,6 +96,7 @@ export function CreateNewWalletModal({ open, setOpen, reloadData }: Props) {
                   <FormItem className="flex flex-col space-y-1.5">
                     <FormControl>
                       <Input
+                        data-testid="modal-nova-carteira__dialog__wallet-description"
                         {...field}
                         placeholder="Digite a descrição da carteira"
                       />

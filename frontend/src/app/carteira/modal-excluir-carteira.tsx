@@ -74,6 +74,7 @@ export function ModalExcluirCarteira({
             id="terms"
             checked={checked}
             onCheckedChange={check => setChecked(!!check)}
+            data-testid="modal-excluir-carteira__dialog-content__checkbox"
           />
           <label
             htmlFor="terms"
@@ -87,6 +88,7 @@ export function ModalExcluirCarteira({
             disabled={!checked}
             onClick={handleDelete}
             variant={'destructive'}
+            data-testid="modal-excluir-carteira__dialog-footer__delete-button"
           >
             Excluir
           </Button>
