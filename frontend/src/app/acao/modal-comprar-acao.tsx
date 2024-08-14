@@ -107,7 +107,7 @@ export function ModalComprarAcao({ open, setOpen, acao }: Props) {
                       defaultValue={String(field.value)}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger data-testid="test">
                           <SelectValue placeholder="Selecione a carteira" />
                         </SelectTrigger>
                       </FormControl>
