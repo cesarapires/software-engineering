@@ -15,6 +15,10 @@ describe('Login Page', () => {
 	}
   })
 
+  after(() => {
+	cy.resetDatabase()
+  })
+
   it('[RF001] Deve Criar um novo Usuário', () => {
 	createUser(user)
 
