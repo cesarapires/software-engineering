@@ -35,3 +35,10 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('resetDatabase', () => {
+    cy.request('POST', 'http://localhost:9999/tests/reset-database', {
+    }).then((response) => {
+        expect(response.status).to.eq(200);
+    });
+});
