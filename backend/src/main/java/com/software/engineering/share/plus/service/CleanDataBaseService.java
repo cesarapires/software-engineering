@@ -20,9 +20,9 @@ public class CleanDataBaseService {
     private final CarteiraAcaoRepository carteiraAcaoRepository;
 
     public void cleanDatabase() {
-        carteiraRepository.deleteAll();
-        usuarioRepository.deleteAll();
         historicoTransacaoRepository.deleteAll();
         carteiraAcaoRepository.deleteAll();
+        carteiraRepository.deleteAll();
+        usuarioRepository.deleteAll();
     }
 }
