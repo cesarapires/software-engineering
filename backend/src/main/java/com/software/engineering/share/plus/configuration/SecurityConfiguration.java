@@ -33,6 +33,7 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> {
                 authorize.requestMatchers(apiPrefix + "/auth/**").permitAll();
+                authorize.requestMatchers(apiPrefix + "/tests/**").permitAll();
                 authorize.anyRequest().authenticated();
             })
             .sessionManagement(sessionManagement ->
@@ -47,7 +48,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:9999", "http://localhost:3005"));
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:9999", "http://localhost:3005"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
         configuration.setAllowCredentials(true);
