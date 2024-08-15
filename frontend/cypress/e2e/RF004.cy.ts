@@ -1,12 +1,13 @@
 import faker from '@faker-js/faker';
 import { makeLogin } from '../fixtures/makeLogin';
 import { User } from '../fixtures/types/user';
+import { createUser } from '../fixtures/createUser';
 
 describe('Login Page', () => {
 
 	let user: User
 
-	beforeEach(() => {
+	before(() => {
 		cy.visit('/')
 
 		user = {
@@ -14,8 +15,17 @@ describe('Login Page', () => {
 			email: 'usuario@dummy.com',
 			password: 'password'
 		}
+		createUser(user)
+	})
 
-		makeLogin(user)
+	beforeEach(() => {
+	  cy.visit('/')
+  
+	  makeLogin(user)
+	})
+
+	after(() => {
+		cy.resetDatabase()
 	})
 
 	it('[RF004E] Não deve editar a senha, quando a senha antiga é inválida', () => {
