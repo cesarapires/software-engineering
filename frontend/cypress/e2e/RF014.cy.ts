@@ -3,25 +3,35 @@ import { makeLogin } from '../fixtures/makeLogin';
 import { User } from '../fixtures/types/user';
 import { createWallet } from '../fixtures/createWallet';
 import { buyStock } from '../fixtures/buyAction';
+import { createUser } from '../fixtures/createUser';
 
 describe('Login Page', () => {
 
 	let user: User
 
-	beforeEach(() => {
-	  cy.visit('/')
-  
-	  user = {
-		  name: 'Usuario Dummy',
-		  email: 'usuario@dummy.com',
-		  password: 'password'
-	  }
+	before(() => {
+		cy.visit('/')
 
-	  makeLogin(user)
+		user = {
+			name: 'Usuario Dummy',
+			email: 'usuario@dummy.com',
+			password: 'password'
+		}
+		createUser(user)
 	})
 
-	it('[RF014] Deve adicionar ação na carteira', () => {
-		cy.contains('a', 'Ações').click()
+	beforeEach(() => {
+		cy.visit('/')
+
+		makeLogin(user)
+	})
+
+	after(() => {
+		cy.resetDatabase()
+	})
+
+	it('[RF014] Deve adicionar ação na carteira', () => {	
+		createWallet("Minha nova carteira")
 		
 		buyStock("BAIQ39", "1")
 	})
@@ -29,7 +39,7 @@ describe('Login Page', () => {
 	it('[RF014E] Não deve comprar ações quando o saldo é insuficiente', () => {
 		cy.contains('a', 'Ações').click()
 		
-		buyStock("BAIQ39", "1")
+		buyStock("BAIQ39", "1000")
 
 		cy.contains('Não foi possível comprar a ação').should('be.visible')
 		cy.contains('Saldo insuficiente para realizar esta transação!').should('be.visible')
