@@ -11,6 +11,13 @@ describe('Login Page', () => {
 
 		user = {
 			name: 'Usuario Dummy',
+			email: 'usuario@dummy.com',
+			password: 'password'
+		}
+		createUser(user)
+
+		user = {
+			name: 'Usuario Dummy',
 			email: 'usuario2@dummy.com',
 			password: 'password'
 		}
@@ -29,10 +36,14 @@ describe('Login Page', () => {
 	  makeLogin(user)
 	})
 
+	after(() => {
+		cy.resetDatabase()
+	})
+
   it('[RF003E] Não deve editar o perfil, quando o usuário tenta utilizar um email já cadastrado', () => {
 	cy.get('img[alt="Descrição da imagem"]').click()
 
-	cy.get('input[name="name"]').type('Usuário Dummy 2')
+	cy.get('input[name="name"]').clear().type('Usuário Dummy 2')
 	cy.get('input[name="email"]').clear().type('usuario@dummy.com')
 
 	cy.contains('button', 'Alterar usuário').click()
@@ -44,7 +55,7 @@ describe('Login Page', () => {
   it('RF003] Deve editar o perfil, quando o usuário está logado', () => {
 	cy.get('img[alt="Descrição da imagem"]').click()
 
-	cy.get('input[name="name"]').type('Usuário Dummy 2')
+	cy.get('input[name="name"]').clear().type('Usuário Dummy 2')
 	cy.get('input[name="email"]').clear().type('usuario2@dummy.com')
 
 	cy.contains('button', 'Alterar usuário').click()
