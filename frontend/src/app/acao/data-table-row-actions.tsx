@@ -53,11 +53,15 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem
           onClick={handleView}
           data-testid="data-table-row-actions__dropdown__vizualize-button"
-        >Visualizar</DropdownMenuItem>
+        >
+          Visualizar
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleOpen}
           data-testid="data-table-row-actions__dropdown__buy-button"
-        >Comprar</DropdownMenuItem>
+        >
+          Comprar
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

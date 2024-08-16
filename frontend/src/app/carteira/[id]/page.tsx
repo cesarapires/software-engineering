@@ -92,6 +92,7 @@ export default function VisualizarCarteira({
                     <Button
                       variant="ghost"
                       className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                      data-testid="data-table-row-actions__dropdown-trigger__open-stock-button"
                     >
                       <Settings className="h-4 w-4" />
                       <span className="sr-only">Abrir opções</span>
@@ -100,6 +101,7 @@ export default function VisualizarCarteira({
                   <DropdownMenuContent align="end" className="w-[160px]">
                     <DropdownMenuItem
                       onClick={() => handleOpen(carteiraAcao.acao)}
+                      data-testid="data-table-row-actions__dropdown-trigger__sell-button"
                     >
                       Vender
                     </DropdownMenuItem>
