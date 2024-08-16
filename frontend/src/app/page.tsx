@@ -56,7 +56,7 @@ export default function Home() {
       <div>
         <Label>Escolha a carteira para visualizar o relatório</Label>
         <Select onValueChange={a => setCarteira(a)} defaultValue={carteira}>
-          <SelectTrigger>
+          <SelectTrigger data-testid="select-test">
             <SelectValue placeholder="Selecione a carteira" />
           </SelectTrigger>
           <SelectContent>
