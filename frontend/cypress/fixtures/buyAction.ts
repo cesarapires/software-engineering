@@ -5,7 +5,7 @@ export function buyStock(stockId: string, quantity: string = "1", walletPosition
 
     cy.get('[data-testid="data-table-row-actions__dropdown__buy-button"]').click({ force: true })
     
-    cy.get('[data-testid="test"]').click()
+    cy.get('[data-testid="select-test"]').click()
 
     cy.get(`.p-${walletPosition} > .relative`).click()
     
