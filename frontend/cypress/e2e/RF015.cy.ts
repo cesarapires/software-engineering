@@ -1,52 +1,51 @@
-import { makeLogin } from '../fixtures/makeLogin';
-import { User } from '../fixtures/types/user';
-import { createWallet } from '../fixtures/createWallet';
-import { buyStock } from '../fixtures/buyAction';
-import { createUser } from '../fixtures/createUser';
-import { addFunds } from '../fixtures/addFounds';
-import { sellStock } from '../fixtures/sellAction';
+import { makeLogin } from '../fixtures/makeLogin'
+import { User } from '../fixtures/types/user'
+import { createWallet } from '../fixtures/createWallet'
+import { buyStock } from '../fixtures/buyAction'
+import { createUser } from '../fixtures/createUser'
+import { addFunds } from '../fixtures/addFounds'
+import { sellStock } from '../fixtures/sellAction'
 
 describe('Login Page', () => {
+  let user: User
 
-	let user: User
+  before(() => {
+    cy.visit('/')
 
-	before(() => {
-		cy.visit('/')
+    user = {
+      name: 'Usuario Dummy',
+      email: 'usuario@dummy.com',
+      password: 'password',
+    }
+    createUser(user)
+  })
 
-		user = {
-			name: 'Usuario Dummy',
-			email: 'usuario@dummy.com',
-			password: 'password'
-		}
-		createUser(user)
-	})
+  beforeEach(() => {
+    cy.visit('/')
 
-	beforeEach(() => {
-		cy.visit('/')
+    makeLogin(user)
+  })
 
-		makeLogin(user)
-	})
+  after(() => {
+    cy.resetDatabase()
+  })
 
-	after(() => {
-		cy.resetDatabase()
-	})
+  it('[RF0015E] Não deve vender as ações da carteira se a quantidade comprada for maior que o em posse', () => {
+    createWallet('Minha carteira com ações')
 
-	it('[RF0015E] Não deve vender as ações da carteira se a quantidade comprada for maior que o em posse', () => {
-		createWallet('Minha carteira com ações')
+    addFunds(50000)
 
-		addFunds(50000)
+    buyStock('BAIQ39', '1')
 
-		buyStock("BAIQ39", "1")
+    sellStock('10')
 
-		sellStock('10')
+    cy.contains('Não foi possível vender a ação').should('be.visible')
+    cy.contains('Quantidade insuficiente para venda').should('be.visible')
+  })
 
-		cy.contains('Não foi possível vender a ação').should('be.visible')
-		cy.contains('Quantidade insuficiente para venda').should('be.visible')
-	})
+  it('[RF0015] Deve vender as ações da carteira', () => {
+    sellStock('1')
 
-	it('[RF0015] Deve vender as ações da carteira', () => {
-		sellStock('1')
-
-		cy.contains('R$ 0').should('be.visible')
-	})
+    cy.contains('R$ 0').should('be.visible')
+  })
 })
