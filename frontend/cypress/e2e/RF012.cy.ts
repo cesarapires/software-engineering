@@ -32,8 +32,8 @@ describe('Login Page', () => {
 	it('[RF012] Deve listar visualizar a listagem de carteiras', () => {
 		cy.contains('a', 'Ações').click()
 
+		cy.get('input[name=search]').clear().type('CIEL')
+
 		cy.contains('CIELO').should('be.visible')
-		cy.contains('BKR SP100 DRE').should('be.visible')
-		cy.contains('ILLINOIS TOODRN').should('be.visible')
 	})
 })

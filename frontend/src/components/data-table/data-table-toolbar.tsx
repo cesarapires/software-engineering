@@ -22,6 +22,7 @@ export function DataTableToolbar<TData>({
         <Input
           placeholder={placeholder}
           value={(table.getAllColumns()[0]?.getFilterValue() as string) ?? ''}
+          name="search"
           onChange={event =>
             table.getAllColumns()[0]?.setFilterValue(event.target.value)
           }
