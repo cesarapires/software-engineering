@@ -32,7 +32,7 @@ public class AuthenticationService {
     public Usuario signup(RegisterUserDTO input) {
         if (usuarioRepository.existsByEmail(input.getEmail())) {
             throw new BadRequestException("Email já cadastrado");
-        };
+        }
 
         Usuario usuario = new Usuario();
         LocalDateTime now = LocalDateTime.now();

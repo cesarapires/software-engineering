@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
-import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.entity.Usuario;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class UsuarioServiceTest {
+class UsuarioServiceTest {
 
 
     @Mock
@@ -35,7 +35,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testAddSaldo_Success() {
+    void testAddSaldo_Success() {
         Double valorDeposito = 50.0;
 
         usuarioService.addSaldo(usuario, valorDeposito);
@@ -45,7 +45,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testAddSaldo_NegativeOrZeroValue() {
+    void testAddSaldo_NegativeOrZeroValue() {
         Double valorDeposito = 0.0;
 
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
@@ -57,7 +57,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testRemoveSaldo_Success() {
+    void testRemoveSaldo_Success() {
         Double valor = 50.0;
 
         usuarioService.removeSaldo(usuario, valor);
@@ -67,7 +67,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testRemoveSaldo_NegativeOrZeroValue() {
+    void testRemoveSaldo_NegativeOrZeroValue() {
         Double valor = 0.0;
 
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
@@ -79,7 +79,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testRemoveSaldo_InsufficientBalance() {
+    void testRemoveSaldo_InsufficientBalance() {
         Double valor = 200.0;
 
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {

@@ -17,6 +17,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +29,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "carteira", schema = "share_plus")
-public class Carteira {
+public class Carteira implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,5 +55,17 @@ public class Carteira {
                 .filter(Objects::nonNull)
                 .mapToDouble(ca -> ca.getQuantidade() * ca.getAcao().getPreco())
                 .sum();
+    }
+
+    @Serial
+    private void writeObject(java.io.ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    @Serial
+    private void readObject(java.io.ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 }

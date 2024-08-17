@@ -2,11 +2,11 @@ package com.software.engineering.share.plus.service;
 
 import com.software.engineering.share.plus.dto.request.BuyAcaoDTO;
 import com.software.engineering.share.plus.dto.request.SellAcaoDTO;
-import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.entity.Acao;
 import com.software.engineering.share.plus.entity.Carteira;
 import com.software.engineering.share.plus.entity.CarteiraAcao;
 import com.software.engineering.share.plus.entity.HistoricoTransacao;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
 import com.software.engineering.share.plus.repository.HistoricoTransacaoRepository;
 import com.software.engineering.share.plus.util.MockEntityFactory;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CarteiraAcaoServiceTest {
+class CarteiraAcaoServiceTest {
 
     @Mock
     private AcaoService acaoService;
@@ -69,7 +69,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testBuyAcao_NewCarteiraAcao() {
+        void testBuyAcao_NewCarteiraAcao() {
             when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
             when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.empty());
@@ -84,7 +84,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testBuyAcao_ExistingCarteiraAcao() {
+        void testBuyAcao_ExistingCarteiraAcao() {
             CarteiraAcao existingCarteiraAcao = new CarteiraAcao(5, acao, carteira);
             when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
@@ -100,7 +100,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testBuyAcao_AcaoNotFound() {
+        void testBuyAcao_AcaoNotFound() {
             when(acaoService.findById(buyDto.getIdAcao())).thenThrow(new BadRequestException("Ação não encontrada na base de dados."));
 
             BadRequestException exception = assertThrows(BadRequestException.class, () -> {
@@ -114,7 +114,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testBuyAcao_CarteiraNotFound() {
+        void testBuyAcao_CarteiraNotFound() {
             when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(buyDto.getIdCarteira())).thenThrow(new BadRequestException("Carteira não encontrada na base de dados."));
 
@@ -129,7 +129,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testBuyAcao_InsufficientBalance() {
+        void testBuyAcao_InsufficientBalance() {
             when(acaoService.findById(buyDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(buyDto.getIdCarteira())).thenReturn(carteira);
             doThrow(new BadRequestException("Saldo insuficiente para realizar esta transação!"))
@@ -156,7 +156,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testSellAcao_OK() {
+        void testSellAcao_OK() {
             when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
             when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(carteiraAcao));
@@ -170,7 +170,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testSellAcao_InsufficientQuantity() {
+        void testSellAcao_InsufficientQuantity() {
             when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
             when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.of(carteiraAcao));
@@ -188,7 +188,7 @@ public class CarteiraAcaoServiceTest {
         }
 
         @Test
-        public void testSellAcao_AcaoNotFoundInCarteira() {
+        void testSellAcao_AcaoNotFoundInCarteira() {
             when(acaoService.findById(sellDto.getIdAcao())).thenReturn(acao);
             when(carteiraService.findById(sellDto.getIdCarteira())).thenReturn(carteira);
             when(carteiraAcaoRepository.findByCarteiraIsAndAcaoIs(carteira, acao)).thenReturn(Optional.empty());

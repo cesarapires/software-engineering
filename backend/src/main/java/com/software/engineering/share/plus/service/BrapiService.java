@@ -64,7 +64,11 @@ public class BrapiService {
         String url = String.format("%s/quote/%s?token=%s&range=1mo&interval=1d", brapiUrl, stockSymbol, token);
         ResultsBrapiDTO response = restTemplate.getForObject(url, ResultsBrapiDTO.class);
         Acao acao = acaoRepository.findByCodigo(stockSymbol);
-        StockDetailDTO stockDetailDTO = response.getResults().get(0);
+
+        if (response == null) {
+            return null;
+        }
+        StockDetailDTO stockDetailDTO = response.getResults().getFirst();
         if (acao != null) {
             stockDetailDTO.setClose(acao.getPreco());
             stockDetailDTO.setSector(acao.getSetor());

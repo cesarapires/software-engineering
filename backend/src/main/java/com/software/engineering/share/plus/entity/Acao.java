@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,7 +24,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "acao", schema = "share_plus")
-public class Acao {
+public class Acao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +62,17 @@ public class Acao {
     @Override
     public int hashCode() {
         return Objects.hash(codigo);
+    }
+
+    @Serial
+    private void writeObject(java.io.ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    @Serial
+    private void readObject(java.io.ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 }

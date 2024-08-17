@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -68,21 +70,21 @@ public class UsuarioService {
 
     @Transactional
     public void updateUser(UpdateUserDTO updateUserDTO) {
-        boolean emailIsEquals = updateUserDTO.getEmail().equals(updateUserDTO.getEmail());
-        boolean emailExists = usuarioRepository.existsByEmail(updateUserDTO.getEmail());
-
-        if (!emailIsEquals && emailExists) {
-            throw new BadRequestException("Email já está em uso por outro usuário");
-        }
-
-        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (updateUserDTO.getEmail().isEmpty()) {
             throw new BadRequestException("Email não pode ser vázio");
         }
 
         if (updateUserDTO.getName().isEmpty()) {
             throw new BadRequestException("Nome não pode ser vázio");
+        }
+
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        boolean emailIsEquals = Objects.equals(usuario.getEmail(), updateUserDTO.getEmail());
+        boolean emailExists = usuarioRepository.existsByEmail(updateUserDTO.getEmail());
+
+        if (!emailIsEquals && emailExists) {
+            throw new BadRequestException("Email já está em uso por outro usuário");
         }
 
         usuario.setEmail(updateUserDTO.getEmail());

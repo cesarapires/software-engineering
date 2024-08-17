@@ -33,3 +33,4 @@ build/
 .vscode/
 
 share-plus.log
+share-plus.log.*

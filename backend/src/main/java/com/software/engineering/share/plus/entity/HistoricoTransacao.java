@@ -14,6 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -23,7 +26,7 @@ import java.time.LocalDateTime;
 @Table(name = "historico_transacao", schema = "share_plus")
 @Getter
 @Setter
-public class HistoricoTransacao {
+public class HistoricoTransacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,5 +65,17 @@ public class HistoricoTransacao {
         this.quantidade = quantidade;
         this.valor = valor;
         this.isCompra = isCompra;
+    }
+
+    @Serial
+    private void writeObject(java.io.ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    @Serial
+    private void readObject(java.io.ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
     }
 }

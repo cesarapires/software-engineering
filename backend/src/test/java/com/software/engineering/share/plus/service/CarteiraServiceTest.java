@@ -1,7 +1,7 @@
 package com.software.engineering.share.plus.service;
 
-import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.entity.Carteira;
+import com.software.engineering.share.plus.exception.BadRequestException;
 import com.software.engineering.share.plus.repository.CarteiraAcaoRepository;
 import com.software.engineering.share.plus.repository.CarteiraRepository;
 import com.software.engineering.share.plus.util.MockEntityFactory;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CarteiraServiceTest {
+class CarteiraServiceTest {
 
     @Mock
     private CarteiraRepository carteiraRepository;
@@ -40,7 +40,7 @@ public class CarteiraServiceTest {
     }
 
     @Test
-    public void testDeleteCarteiraIfEmpty_Success() {
+    void testDeleteCarteiraIfEmpty_Success() {
         when(carteiraRepository.findById(1L)).thenReturn(Optional.of(carteira));
         when(carteiraAcaoRepository.existsByCarteira(carteira)).thenReturn(false);
 
@@ -50,7 +50,7 @@ public class CarteiraServiceTest {
     }
 
     @Test
-    public void testDeleteCarteiraIfEmpty_HasAcoes() {
+    void testDeleteCarteiraIfEmpty_HasAcoes() {
         when(carteiraRepository.findById(1L)).thenReturn(Optional.of(carteira));
         when(carteiraAcaoRepository.existsByCarteira(carteira)).thenReturn(true);
 
