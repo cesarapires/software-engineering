@@ -54,7 +54,7 @@ public class AuthController {
 
     @GetMapping("/is-logged-in")
     public ResponseEntity<LoginResponseDTO> isLoggedIn(HttpServletRequest request) {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/logout")
