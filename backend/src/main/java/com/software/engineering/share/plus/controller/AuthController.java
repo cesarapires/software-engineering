@@ -10,6 +10,7 @@ import com.software.engineering.share.plus.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,15 +54,7 @@ public class AuthController {
 
     @GetMapping("/is-logged-in")
     public ResponseEntity<LoginResponseDTO> isLoggedIn(HttpServletRequest request) {
-        if (jwtService.isTokenValid(request.getHeader("Authorization"))) {
-            Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String jwtToken = jwtService.generateToken(usuario);
-            LoginResponseDTO loginResponse = new LoginResponseDTO(jwtToken, jwtService.getExpirationTime());
-
-            return ResponseEntity.ok(loginResponse);
-        }
-
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/logout")
