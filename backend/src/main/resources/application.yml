@@ -1,5 +1,8 @@
 server:
   port: 9999
+  address: 0.0.0.0
+  servlet:
+    context-path: /
 api-prefix: ''
 database-name: share_plus
 spring:
