@@ -46,7 +46,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: .
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}, ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:latest
           labels: ${{ steps.meta.outputs.labels }}
