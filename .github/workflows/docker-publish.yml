@@ -9,6 +9,7 @@ env:
   REGISTRY: docker.io
   ACCOUNT: ${{ secrets.DOCKER_HUB_USER_NAME }}
   IMAGE_NAME_BACKEND: share-plus-backend
+  IMAGE_TAG: ${{ github.sha }}
 jobs:
   build-and-push:
     name: 🏗️ Build Docker Image
@@ -47,7 +48,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ github.sha }}, ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}, ${{ env.REGISTRY }}/${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -71,7 +72,7 @@ jobs:
       - name: Update Kubernetes
         run: |
           cd ${{ env.IMAGE_NAME_BACKEND }}/kubernetes
-          kustomize edit set image ${{ env.IMAGE_NAME_BACKEND }}-api=${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ github.sha }}
+          kustomize edit set image ${{ env.IMAGE_NAME_BACKEND }}-api=${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}
           cat kustomization.yaml
 
       - name: Commit
