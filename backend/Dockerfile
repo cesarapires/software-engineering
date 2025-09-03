@@ -14,7 +14,7 @@ FROM eclipse-temurin:22
 
 WORKDIR /app
 
-EXPOSE 3005
+EXPOSE 9999
 
 COPY .mvn/ .mvn
 
