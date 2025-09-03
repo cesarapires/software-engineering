@@ -72,7 +72,7 @@ jobs:
       - name: Update Kubernetes
         run: |
           cd ${{ env.IMAGE_NAME_BACKEND }}/kubernetes
-          kustomize edit set image ${{ env.IMAGE_NAME_BACKEND }}-api=${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}
+          kustomize edit set image ${{ env.IMAGE_NAME_BACKEND }}=${{ env.ACCOUNT }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}
           cat kustomization.yaml
 
       - name: Commit
